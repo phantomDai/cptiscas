@@ -1,15 +1,11 @@
 package testprograms;
 
 
-import bin.BinList;
-import set.mutants.MutantSet;
-import testdata.TestData;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import static java.io.File.separator;
 
 /**
  * 控制测试的执行
@@ -61,31 +57,24 @@ public class TestProgram {
      * @param fullServiceName 测试类的绝对路径
      */
     public void initializeServiceInstance(int index, String fullServiceName){
-        serviceClass = null;
-        serviceConstructor = null;
-        servicemethod_getResults = null;
         try {
             serviceClass = Class.forName(fullServiceName);
             serviceConstructor = serviceClass.getConstructor(null);
             servicemethod_getResults = serviceClass.getMethod(METHODNAME_GETRESULTS,null);
             switch (index) {
                 case 0 :
-                    servicemethod_sequentialAndsequential = null;
                     servicemethod_sequentialAndsequential = serviceClass.getMethod(METHODNAME_SEQUENANDSEQUEN,
                             int[].class,String.class,int.class);
                     break;
                 case 1:
-                    servicemethod_sequentialAndconcurrent = null;
                     servicemethod_sequentialAndconcurrent = serviceClass.getMethod(METHODNAME_SEQUENANDCONCU,
                             int[].class,String.class);
                     break;
                 case 2:
-                    servicemethod_concurrentAndsequential = null;
                     servicemethod_concurrentAndsequential = serviceClass.getMethod(METHODNAME_CONCUANDSEQUEN,
                             int[].class,String.class);
                     break;
                 case 3:
-                    servicemethod_concurrentAndconcurrent = null;
                     servicemethod_concurrentAndconcurrent = serviceClass.getMethod(METHODNAME_CONCUANDCONCU,
                             int[].class,String.class);
                     break;
@@ -106,7 +95,8 @@ public class TestProgram {
      * @param mutantFullName 变异体的绝对路径
      * @param array 传入的数据
      */
-    public void executeService(int index, int numberOfThreads, String mutantFullName, int[] array) {
+    public void executeService(int index, int numberOfThreads, String serviceName, String mutantFullName, int[] array) {
+        initializeServiceInstance(index, serviceName);
         try {
             switch (index) {
                 case 0:
@@ -144,6 +134,13 @@ public class TestProgram {
             e.printStackTrace();
         }
         return tempArray;
+    }
+
+
+    public int[] executeServiceAndGetResult(int index, int numberOfThreads, String serviceName, String mutantFullName, int[] array){
+        executeService(index,numberOfThreads,serviceName,mutantFullName,array);
+        int[] tempArray = getResults();
+        return tempArray ;
     }
 
 

@@ -22,7 +22,7 @@ public class MR1 implements MetamorphicRelations {
     /**
      * 默认的循环次数
      */
-    private static final int SEED = 10;
+    private static final int SEED = 1;
 
 
     /**
@@ -91,9 +91,6 @@ public class MR1 implements MetamorphicRelations {
         //获取变异体集合
         MutantSet mutantSet = new MutantSet(objectName,MUTANTSNAME[index]);
 
-        //获取service的对象
-        TestProgram testProgram = new TestProgram();
-
         //获取写入违反蜕变关系的结果
         WrongReport wrongReport = new WrongReport();
 
@@ -106,7 +103,8 @@ public class MR1 implements MetamorphicRelations {
             //开始记录时间
             long startTime = System.currentTimeMillis();
 
-            for (int i = 0; i < mutantSet.size(); i++) {
+//            for (int i = 0; i < mutantSet.size(); i++) {
+            for (int i = 0; i < 1; i++) {
                 System.out.println("开始测试" + objectName + "的" + mutantSet.getMutantID(i));
 
                 //随机产生1W个数据
@@ -117,20 +115,26 @@ public class MR1 implements MetamorphicRelations {
                 int[] sourceArray = sourceList(randomArray);
 
                 //执行原始测试数据并获取测试结果
-                testProgram.initializeServiceInstance(index,serviceName);
-                testProgram.executeService(index,numberOfThreads,
+                TestProgram testProgramForSource = new TestProgram();
+                int[] sourceTopArray = testProgramForSource.executeServiceAndGetResult(index,numberOfThreads,serviceName,
                         mutantSet.getMutantFullName(i),sourceArray);
-                int[] sourceTopArray = testProgram.getResults();
 
+                for (int k = 0; k < sourceTopArray.length; k++) {
+                    System.out.println(sourceTopArray[k] + ", ");
+                }
+                System.out.println("\n");
 
                 //获取衍生测试数据
                 int[] followUpArray = followUpList(sourceArray,sourceTopArray);
 
                 //执行原始测试数据并获取测试结果
-                testProgram.initializeServiceInstance(index,serviceName);
-                testProgram.executeService(index,numberOfThreads,
+                TestProgram testProgramForFollowUp = new TestProgram();
+                int[] followTopArray = testProgramForFollowUp.executeServiceAndGetResult(index,numberOfThreads,serviceName,
                         mutantSet.getMutantFullName(i),followUpArray);
-                int[] followTopArray = testProgram.getResults();
+
+                for (int k = 0; k < followTopArray.length; k++) {
+                    System.out.println(followTopArray[k] + ", ");
+                }
 
                 //验证原始数据和衍生数据的执行结果是否符合蜕变关系
                 boolean flag = isConformToMR(sourceTopArray,followTopArray);
