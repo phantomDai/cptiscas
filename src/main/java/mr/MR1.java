@@ -22,7 +22,7 @@ public class MR1 implements MetamorphicRelations {
     /**
      * 默认的循环次数
      */
-    private static final int SEED = 1;
+    private static final int SEED = 10;
 
 
     /**
@@ -103,8 +103,8 @@ public class MR1 implements MetamorphicRelations {
             //开始记录时间
             long startTime = System.currentTimeMillis();
 
-//            for (int i = 0; i < mutantSet.size(); i++) {
-            for (int i = 0; i < 1; i++) {
+            for (int i = 0; i < mutantSet.size(); i++) {
+//            for (int i = 0; i < 1; i++) {
                 System.out.println("开始测试" + objectName + "的" + mutantSet.getMutantID(i));
 
                 //随机产生1W个数据
@@ -119,11 +119,6 @@ public class MR1 implements MetamorphicRelations {
                 int[] sourceTopArray = testProgramForSource.executeServiceAndGetResult(index,numberOfThreads,serviceName,
                         mutantSet.getMutantFullName(i),sourceArray);
 
-                for (int k = 0; k < sourceTopArray.length; k++) {
-                    System.out.println(sourceTopArray[k] + ", ");
-                }
-                System.out.println("\n");
-
                 //获取衍生测试数据
                 int[] followUpArray = followUpList(sourceArray,sourceTopArray);
 
@@ -132,15 +127,11 @@ public class MR1 implements MetamorphicRelations {
                 int[] followTopArray = testProgramForFollowUp.executeServiceAndGetResult(index,numberOfThreads,serviceName,
                         mutantSet.getMutantFullName(i),followUpArray);
 
-                for (int k = 0; k < followTopArray.length; k++) {
-                    System.out.println(followTopArray[k] + ", ");
-                }
-
                 //验证原始数据和衍生数据的执行结果是否符合蜕变关系
                 boolean flag = isConformToMR(sourceTopArray,followTopArray);
 
                 //如果违反了蜕变关系，则添加到列表中，并记录执行结果
-                if (flag){
+                if (!flag){
                     killedMutants.add(mutantSet.getMutantID(i));
                     wrongReport.writeLog(index,loop,j,numberOfThreads,objectName,
                             mutantSet.getMutantID(i),sourceTopArray,followTopArray);
@@ -148,7 +139,7 @@ public class MR1 implements MetamorphicRelations {
             }//i-遍历所有的变异体
             long endtime = System.currentTimeMillis();
             //将本次执行的结果记录到XLS文件中
-            logRecorder.write(index,loop,j,numberOfThreads,objectName,
+            logRecorder.write(index,loop,j,numberOfThreads,objectName,"MR1",
                     killedMutants,mutantSet.size(),endtime - startTime);
         }//j-循环次数
     }

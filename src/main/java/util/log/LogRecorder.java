@@ -30,7 +30,7 @@ import static java.io.File.separator;
 public class LogRecorder {
 
     public void write(int index, int loop, int seed, int numberOfThreads,String objectName,
-                      List<String> killedMutants, int numOfMutants,long time) {
+                      String MRName, List<String> killedMutants, int numOfMutants,long time) {
 
         //获取文件名以及文件的绝对路径
         String fileName = objectName + "index@" + String.valueOf(index)
@@ -55,7 +55,7 @@ public class LogRecorder {
             int temp = sheet.getRows();
 
             //创建内容列表
-            String[] content = {String.valueOf(seed),String.valueOf(loop),String.valueOf(numOfMutants),
+            String[] content = {String.valueOf(seed),String.valueOf(loop),MRName,String.valueOf(numOfMutants),
             String.valueOf(killedMutants.size()),String.valueOf(numOfMutants - killedMutants.size()),
             String.valueOf(time)};
 

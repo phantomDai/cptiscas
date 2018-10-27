@@ -52,7 +52,7 @@ public class WrongReport {
      */
     private void writeInfo(File file, String info) {
         try {
-            PrintWriter pw = new PrintWriter(new FileWriter(file));
+            PrintWriter pw = new PrintWriter(new FileWriter(file,true));
             pw.write(info + "\r");
             pw.close();
         } catch (Exception e) {

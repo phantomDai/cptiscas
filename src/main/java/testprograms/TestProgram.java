@@ -6,7 +6,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-
 /**
  * 控制测试的执行
  * @author phantom
@@ -31,11 +30,14 @@ public class TestProgram {
 
     private static final String METHODNAME_GETRESULTS = "getResults" ;
 
-    /**service的类实例*/
+    /**service的类对象*/
     private Class serviceClass;
 
     /**service的构造器实例*/
     private Constructor serviceConstructor;
+
+    /**service类的实例*/
+    private Object instance ;
 
     /**service的方法实例*/
     private Method servicemethod_sequentialAndsequential;
@@ -60,6 +62,7 @@ public class TestProgram {
         try {
             serviceClass = Class.forName(fullServiceName);
             serviceConstructor = serviceClass.getConstructor(null);
+            instance = serviceConstructor.newInstance(null);
             servicemethod_getResults = serviceClass.getMethod(METHODNAME_GETRESULTS,null);
             switch (index) {
                 case 0 :
@@ -83,6 +86,12 @@ public class TestProgram {
             e.printStackTrace();
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
         }
     }
 
@@ -100,16 +109,16 @@ public class TestProgram {
         try {
             switch (index) {
                 case 0:
-                    servicemethod_sequentialAndsequential.invoke(serviceClass,array,mutantFullName,numberOfThreads);
+                    servicemethod_sequentialAndsequential.invoke(instance,array,mutantFullName,numberOfThreads);
                     break;
                 case 1:
-                    servicemethod_sequentialAndconcurrent.invoke(serviceClass,array,mutantFullName,numberOfThreads);
+                    servicemethod_sequentialAndconcurrent.invoke(instance,array,mutantFullName,numberOfThreads);
                     break;
                 case 2:
-                    servicemethod_concurrentAndsequential.invoke(serviceClass,array,mutantFullName,numberOfThreads);
+                    servicemethod_concurrentAndsequential.invoke(instance,array,mutantFullName,numberOfThreads);
                     break;
                 case 3:
-                    servicemethod_concurrentAndconcurrent.invoke(serviceClass,array,mutantFullName,numberOfThreads);
+                    servicemethod_concurrentAndconcurrent.invoke(instance,array,mutantFullName,numberOfThreads);
                     break;
             }
         } catch (IllegalAccessException e) {
@@ -127,7 +136,7 @@ public class TestProgram {
     public int[] getResults(){
         int[] tempArray = null;
         try {
-            tempArray = (int[]) servicemethod_getResults.invoke(serviceClass,null);
+            tempArray = (int[]) servicemethod_getResults.invoke(instance,null);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {
