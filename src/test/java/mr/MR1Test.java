@@ -1,4 +1,4 @@
-package test.mr; 
+package mr;
 
 import mr.MR1;
 import org.junit.Test;

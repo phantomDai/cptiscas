@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 public class TestSimpleLinear {
 
     /**从list中取出数据的默认个数**/
-    private static final int DEFAULTNUMBER = 10 ;
+    private int DEFAULTNUMBER = 10 ;
 
     /**默认开启的线程数目: 10*/
     private static final int DEFAULTTHREAD = 10;
@@ -73,7 +73,7 @@ public class TestSimpleLinear {
         sequentAddDataToList(list);
 
         //顺序地移除数据
-        for (int i = 0; i < DEFAULTTHREAD; i++) {
+        for (int i = 0; i < DEFAULTNUMBER; i++) {
             boolean flag = false;
             while (!flag){
                 try{
@@ -109,7 +109,7 @@ public class TestSimpleLinear {
 
         //并发的移除数据
         //根据开启的线程数目决定循环的次数
-        int loop = 10 / numberOfThreads;
+        int loop = DEFAULTNUMBER / numberOfThreads;
         for (int j = 0; j < loop; j++) {
             //初始化线程
             for (int i = 0; i < numberOfThreads; i++) {
@@ -235,7 +235,7 @@ public class TestSimpleLinear {
         /*********************  并发地取数据  ******************************/
         //并发的移除数据
         //根据开启的线程数目决定循环的次数
-        int loop = 10 / numberOfThreads;
+        int loop = DEFAULTNUMBER / numberOfThreads;
         for (int j = 0; j < loop; j++) {
             //初始化线程
             for (int i = 0; i < numberOfThreads; i++) {
@@ -354,6 +354,16 @@ public class TestSimpleLinear {
             }
         }
     }
+
+
+    /**
+     * 根据MR的需求改变移除的数据的个数
+     * @param defaultnumber 配置移除数据的个数
+     */
+    public void setDefaultnumber(int defaultnumber){
+        this.DEFAULTNUMBER = defaultnumber;
+    }
+
 
 
     /**

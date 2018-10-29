@@ -30,6 +30,8 @@ public class TestProgram {
 
     private static final String METHODNAME_GETRESULTS = "getResults" ;
 
+    private static final String METHODNAME_SETDEFAULTNUMBER = "setDefaultnumber";
+
     /**service的类对象*/
     private Class serviceClass;
 
@@ -54,6 +56,8 @@ public class TestProgram {
     /**service的方法实例*/
     private Method servicemethod_getResults;
 
+    private Method servicemethod_setDefaultNumber;
+
     /**
      * 初始化service
      * @param fullServiceName 测试类的绝对路径
@@ -64,6 +68,7 @@ public class TestProgram {
             serviceConstructor = serviceClass.getConstructor(null);
             instance = serviceConstructor.newInstance(null);
             servicemethod_getResults = serviceClass.getMethod(METHODNAME_GETRESULTS,null);
+            servicemethod_setDefaultNumber = serviceClass.getMethod(METHODNAME_SETDEFAULTNUMBER, int.class);
             switch (index) {
                 case 0 :
                     servicemethod_sequentialAndsequential = serviceClass.getMethod(METHODNAME_SEQUENANDSEQUEN,
@@ -121,6 +126,20 @@ public class TestProgram {
                     servicemethod_concurrentAndconcurrent.invoke(instance,array,mutantFullName,numberOfThreads);
                     break;
             }
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 设置从列表中取出的数据的个数
+     * @param defaultNumber 设置的值，如果步设置该值，默认取出的数据是10
+     */
+    public void setDefaultNumber(int defaultNumber){
+        try {
+            servicemethod_setDefaultNumber.invoke(instance,defaultNumber);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {
