@@ -21,7 +21,8 @@ public class MR1Test {
 */ 
 @Test
 public void testExecuteService() throws Exception {
-
+MR1 mr = new MR1();
+mr.executeService(0,0,10,"SkipQueue");
 } 
 
 

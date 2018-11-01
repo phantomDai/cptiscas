@@ -111,7 +111,7 @@ public final class PrioritySkipList<T> implements Iterable<T> {
         boolean[] marked = {false};
         succ = node.next[bottomLevel].get(marked);
         while (true) { // until someone succeeded in marking
-          boolean iMarkedIt = node.next[bottomLevel].compareAndSet(succ, succ, false, true);
+          boolean iMarkedIt;
 		  if (node.next[bottomLevel].getReference() == succ && node.next[bottomLevel].isMarked() == false){
 			  node.next[bottomLevel].set(succ,true);
 			  iMarkedIt = true;
