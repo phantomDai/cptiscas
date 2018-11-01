@@ -21,9 +21,7 @@ public class MainTest {
 */ 
 @Test
 public void testStartExecuteTesting() {
-//TODO: Test goes here...
-    Main main = new Main();
-    main.startExecuteTesting();
+
 } 
 
 
