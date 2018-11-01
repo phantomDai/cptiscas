@@ -1,6 +1,8 @@
 package service;
 
 
+import bin.BinList;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -112,6 +114,8 @@ public class TestSimpleLinear {
         int loop = DEFAULTNUMBER / numberOfThreads;
         for (int j = 0; j < loop; j++) {
             //初始化线程
+            removeMinThreads = new RemoveMinThread[numberOfThreads];
+
             for (int i = 0; i < numberOfThreads; i++) {
                 removeMinThreads[i] = new RemoveMinThread();
             }
@@ -122,7 +126,12 @@ public class TestSimpleLinear {
             //执行线程中的任务
             for (int i = 0; i < numberOfThreads; i++) {
                 try {
-                    removeMinThreads[i].join();
+                    removeMinThreads[i].join(100);
+                    if (removeMinThreads[i].isAlive()){
+                        for (int k = 0; k < numberOfThreads; k++) {
+                            removeMinThreads[k].cancel();
+                        }
+                    }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -141,28 +150,28 @@ public class TestSimpleLinear {
     public void concurrentAndsequential(int[] list, String myMutantFullName, int numberOfThreads){
 
         //获取一个实例
+
         getInstance(list.length,myMutantFullName);
 
         //并发地向列表中添加数据
         //每个线程需要添加的数据的集合的集合
-        List<List<Integer>> lists = new ArrayList<>();
+        BinList[] lists = new BinList[numberOfThreads];
+        for (int i = 0; i < lists.length; i++) {
+            lists[i] = new BinList();
+        }
         //每个线程需要添加的数据的数目
         int pre_thread = list.length / numberOfThreads ;
-        //将整形数组转化为列表
-        List<Integer> mylist = Arrays.stream(list).boxed().collect(Collectors.toList());
+
         for (int i = 0; i < numberOfThreads; i++) {
-            List<Integer> tempList = new ArrayList<>();
-            if (i <= (numberOfThreads - 2)) {
-                tempList.addAll(mylist.subList(i * pre_thread, i * pre_thread + numberOfThreads));
-            }else {
-                tempList.addAll(mylist.subList(i * pre_thread, mylist.size()));
+            for (int j = i * pre_thread; j < i * pre_thread + pre_thread; j++) {
+                lists[i].put(list[j]);
             }
-            lists.add(tempList);
-            tempList.clear();
         }
+
         //初始化线程
+        addThreads = new AddThread[numberOfThreads];
         for (int i = 0; i < numberOfThreads; i++) {
-            addThreads[i] = new AddThread(lists.get(i));
+            addThreads[i] = new AddThread(lists[i].list);
         }
         //启动线程
         for (int i = 0; i < numberOfThreads; i++) {
@@ -171,12 +180,16 @@ public class TestSimpleLinear {
         //执行线程中的任务
         for (int i = 0; i < numberOfThreads; i++) {
             try {
-                addThreads[i].join();
+                addThreads[i].join(100);
+                if (addThreads[i].isAlive()){
+                    for (int j = 0; j < numberOfThreads; j++) {
+                        addThreads[j].cancel();
+                    }
+                }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-
 
         //顺序地在列表中取数据
         sequentRemoveDataFromList();
@@ -200,24 +213,23 @@ public class TestSimpleLinear {
 
         //并发地向列表中添加数据
         //每个线程需要添加的数据的集合的集合
-        List<List<Integer>> lists = new ArrayList<>();
+        BinList[] lists = new BinList[numberOfThreads];
+        for (int i = 0; i < lists.length; i++) {
+            lists[i] = new BinList();
+        }
         //每个线程需要添加的数据的数目
         int pre_thread = list.length / numberOfThreads ;
-        //将整形数组转化为列表
-        List<Integer> mylist = Arrays.stream(list).boxed().collect(Collectors.toList());
+
         for (int i = 0; i < numberOfThreads; i++) {
-            List<Integer> tempList = new ArrayList<>();
-            if (i <= (numberOfThreads - 2)) {
-                tempList.addAll(mylist.subList(i * pre_thread, i * pre_thread + numberOfThreads));
-            }else {
-                tempList.addAll(mylist.subList(i * pre_thread, mylist.size()));
+            for (int j = i * pre_thread; j < i * pre_thread + pre_thread; j++) {
+                lists[i].put(list[j]);
             }
-            lists.add(tempList);
-            tempList.clear();
         }
+
         //初始化线程
+        addThreads = new AddThread[numberOfThreads];
         for (int i = 0; i < numberOfThreads; i++) {
-            addThreads[i] = new AddThread(lists.get(i));
+            addThreads[i] = new AddThread(lists[i].list);
         }
         //启动线程
         for (int i = 0; i < numberOfThreads; i++) {
@@ -226,7 +238,12 @@ public class TestSimpleLinear {
         //执行线程中的任务
         for (int i = 0; i < numberOfThreads; i++) {
             try {
-                addThreads[i].join();
+                addThreads[i].join(100);
+                if (addThreads[i].isAlive()){
+                    for (int j = 0; j < numberOfThreads; j++) {
+                        addThreads[j].cancel();
+                    }
+                }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -238,6 +255,7 @@ public class TestSimpleLinear {
         int loop = DEFAULTNUMBER / numberOfThreads;
         for (int j = 0; j < loop; j++) {
             //初始化线程
+            removeMinThreads = new RemoveMinThread[numberOfThreads];
             for (int i = 0; i < numberOfThreads; i++) {
                 removeMinThreads[i] = new RemoveMinThread();
             }
@@ -248,7 +266,12 @@ public class TestSimpleLinear {
             //执行线程中的任务
             for (int i = 0; i < numberOfThreads; i++) {
                 try {
-                    removeMinThreads[i].join();
+                    removeMinThreads[i].join(100);
+                    if (removeMinThreads[i].isAlive()){
+                        for (int k = 0; k < numberOfThreads; k++) {
+                            removeMinThreads[k].cancel();
+                        }
+                    }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -263,6 +286,14 @@ public class TestSimpleLinear {
      * @return 返回优先级最高的数据
      */
     public int[] getResults(){
+        if (vector.size() < DEFAULTNUMBER){
+            Random random = new Random();
+            for (int i = 0; i < (DEFAULTNUMBER - vector.size()); i++) {
+                vector.add(random.nextInt(1000) + 1000);
+            }
+        }
+        
+        
         int[] tempList = new int[vector.size()];
         for (int i = 0; i < vector.size(); i++) {
             tempList[i] = vector.get(i);
@@ -323,7 +354,17 @@ public class TestSimpleLinear {
         try {
             for (int i = 0; i < DEFAULTNUMBER; i++) {
                 Object temp = method_remove.invoke(mutantInstance,null);
-                vector.add((int)temp);
+                if (temp == null){
+                    Random random = new Random();
+                    temp = random.nextInt(1000) + 1000;
+                }
+                int result = (int) temp ;
+                if (vector.contains(result)){
+                    i--;
+                }else {
+                    vector.add((int)temp);
+                }
+
             }
         } catch (IllegalAccessException e) {
             e.printStackTrace();
@@ -370,13 +411,17 @@ public class TestSimpleLinear {
      * 从列表中取数据的线程
      */
     class RemoveMinThread extends Thread{
-        volatile boolean flag = false;
+
 
         @Override
         public void run(){
             while (!flag){
                 try {
                     Object result = method_remove.invoke(mutantInstance,null);
+                    if (result == null){
+                        Random random = new Random();
+                        result = random.nextInt(1000) + 1000;
+                    }
                     flag = addElements(result);
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
@@ -386,24 +431,37 @@ public class TestSimpleLinear {
             }
         }
 
+        volatile boolean flag = false;
+        public void cancel(){
+            this.flag = true;
+        }
+
     }
 
     class AddThread extends  Thread{
         List<Integer> mylist;
         AddThread(List<Integer> list){
-            mylist = list;
+            this.mylist = list;
         }
         @Override
         public void run(){
-            for (int i = 0; i < mylist.size(); i++) {
-                try {
-                    method_add.invoke(mutantInstance,mylist.get(i));
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
+            while(!flag){
+                for (int i = 0; i < mylist.size(); i++) {
+                    try {
+                        method_add.invoke(mutantInstance,mylist.get(i),mylist.get(i));
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    } catch (InvocationTargetException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
+
+        volatile boolean flag = false;
+        public void cancel(){
+            this.flag = true;
+        }
+
     }
 }

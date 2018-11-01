@@ -125,7 +125,7 @@ public class MR16_2 implements MetamorphicRelations {
                 //执行原始测试数据并获取测试结果
                 TestProgram testProgramForSource = new TestProgram();
                 //根据本蜕变关系设置取出的数据的总个数
-                testProgramForSource.setDefaultNumber(DEFAULTNUMBER + v2number);
+                testProgramForSource.setDefaultNumber((DEFAULTNUMBER + v2number),serviceName);
                 int[] sourceTopArray = testProgramForSource.executeServiceAndGetResult(index,numberOfThreads,serviceName,
                         mutantSet.getMutantFullName(i),sourceArray);
 
@@ -148,7 +148,7 @@ public class MR16_2 implements MetamorphicRelations {
                         mutantSet.getMutantFullName(i),followUpArray1);
 
                 TestProgram testProgramForFollowUp2 = new TestProgram();
-                testProgramForFollowUp2.setDefaultNumber(v2number);
+                testProgramForFollowUp2.setDefaultNumber(v2number,serviceName);
                 int[] followTopArray2 = testProgramForFollowUp2.executeServiceAndGetResult(index,numberOfThreads,serviceName,
                         mutantSet.getMutantFullName(i),followUpArray2);
 

@@ -68,6 +68,10 @@ public class TestSequentialHeap {
             while (!flag){
                 try{
                     Object result = method_remove.invoke(mutantInstance,null);
+                    if (result == null){
+                        Random random = new Random();
+                        result = random.nextInt(1000) + 1000;
+                    }
                     flag = addElements(result);
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
@@ -150,7 +154,7 @@ public class TestSequentialHeap {
      */
     private synchronized boolean addElements(Object element){
         if (element == null){
-            vector.add(random.nextInt(1000) + 7000);
+            vector.add(random.nextInt(1000) + 1000);
             return true;
         }else {
             if (vector.contains(Integer.parseInt(element.toString()))) {

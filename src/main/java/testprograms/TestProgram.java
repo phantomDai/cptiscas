@@ -64,11 +64,17 @@ public class TestProgram {
      */
     public void initializeServiceInstance(int index, String fullServiceName){
         try {
-            serviceClass = Class.forName(fullServiceName);
-            serviceConstructor = serviceClass.getConstructor(null);
-            instance = serviceConstructor.newInstance(null);
+            if (serviceClass == null){
+                serviceClass = Class.forName(fullServiceName);
+            }
+            if (serviceConstructor == null){
+                serviceConstructor = serviceClass.getConstructor(null);
+            }
+            if (instance == null){
+                instance = serviceConstructor.newInstance(null);
+            }
             servicemethod_getResults = serviceClass.getMethod(METHODNAME_GETRESULTS,null);
-            servicemethod_setDefaultNumber = serviceClass.getMethod(METHODNAME_SETDEFAULTNUMBER, int.class);
+
             switch (index) {
                 case 0 :
                     servicemethod_sequentialAndsequential = serviceClass.getMethod(METHODNAME_SEQUENANDSEQUEN,
@@ -76,15 +82,15 @@ public class TestProgram {
                     break;
                 case 1:
                     servicemethod_sequentialAndconcurrent = serviceClass.getMethod(METHODNAME_SEQUENANDCONCU,
-                            int[].class,String.class);
+                            int[].class,String.class,int.class);
                     break;
                 case 2:
                     servicemethod_concurrentAndsequential = serviceClass.getMethod(METHODNAME_CONCUANDSEQUEN,
-                            int[].class,String.class);
+                            int[].class,String.class,int.class);
                     break;
                 case 3:
                     servicemethod_concurrentAndconcurrent = serviceClass.getMethod(METHODNAME_CONCUANDCONCU,
-                            int[].class,String.class);
+                            int[].class,String.class,int.class);
                     break;
             }
         } catch (ClassNotFoundException e) {
@@ -137,12 +143,22 @@ public class TestProgram {
      * 设置从列表中取出的数据的个数
      * @param defaultNumber 设置的值，如果步设置该值，默认取出的数据是10
      */
-    public void setDefaultNumber(int defaultNumber){
+    public void setDefaultNumber(int defaultNumber, String fullServiceName){
         try {
+            serviceClass = Class.forName(fullServiceName);
+            serviceConstructor = serviceClass.getConstructor(null);
+            instance = serviceConstructor.newInstance(null);
+            servicemethod_setDefaultNumber = serviceClass.getMethod(METHODNAME_SETDEFAULTNUMBER, int.class);
             servicemethod_setDefaultNumber.invoke(instance,defaultNumber);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
     }

@@ -54,9 +54,14 @@ public class LogRecorder {
             //获得之前该sheet写入到哪里了
             int temp = sheet.getRows();
 
+            String tempStr = "";
+            for (int i = 0; i < killedMutants.size(); i++) {
+                tempStr += killedMutants.get(i) + ";";
+            }
+
             //创建内容列表
             String[] content = {String.valueOf(seed),String.valueOf(loop),MRName,String.valueOf(numOfMutants),
-            String.valueOf(killedMutants.size()),String.valueOf(numOfMutants - killedMutants.size()),
+            tempStr,String.valueOf(numOfMutants - killedMutants.size()),
             String.valueOf(time)};
 
             for (int i = 0; i < content.length; i++) {

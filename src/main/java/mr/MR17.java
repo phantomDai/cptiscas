@@ -89,7 +89,7 @@ public class MR17 implements MetamorphicRelations {
                 //执行原始测试数据并获取测试结果
                 TestProgram testProgramForSource = new TestProgram();
                 //根据本蜕变关系设置取出的数据的总个数
-                testProgramForSource.setDefaultNumber(DEFAULTNUMBER);
+                testProgramForSource.setDefaultNumber(DEFAULTNUMBER,serviceName);
                 int[] sourceTopArray = testProgramForSource.executeServiceAndGetResult(index,numberOfThreads,serviceName,
                         mutantSet.getMutantFullName(i),sourceArray);
 

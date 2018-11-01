@@ -1,9 +1,7 @@
 package mr;
 
-import mr.MR1;
 import org.junit.Test;
-import org.junit.Before; 
-import org.junit.After; 
+
 
 /** 
 * MR1 Tester. 
@@ -22,18 +20,11 @@ public class MR1Test {
 * 
 */ 
 @Test
-public void testExecuteService() throws Exception { 
-//TODO: Test goes here...
-    MR1 mr = new MR1();
-    mr.executeService(0,0,1,"SimpleLinear");
+public void testExecuteService() throws Exception {
+    MR18_1 mr = new MR18_1();
+//    MR1 mr = new MR1();
+    mr.executeService(0,0,1,"SkipQueue");
 } 
-
-
-/** 
-* 
-* Method: isConformToMR(int[] sourceToplist, int[] followToplist) 
-* 
-*/ 
 
 
 } 

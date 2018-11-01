@@ -1,6 +1,7 @@
 package service;
 
 
+import bin.BinList;
 import lombok.Setter;
 
 import java.lang.reflect.Constructor;
@@ -118,6 +119,8 @@ public class TestSimpleTree {
         int loop = DEFAULTNUMBER / numberOfThreads;
         for (int j = 0; j < loop; j++) {
             //初始化线程
+            removeMinThreads = new RemoveMinThread[numberOfThreads];
+
             for (int i = 0; i < numberOfThreads; i++) {
                 removeMinThreads[i] = new RemoveMinThread();
             }
@@ -151,24 +154,22 @@ public class TestSimpleTree {
 
         //并发地向列表中添加数据
         //每个线程需要添加的数据的集合的集合
-        List<List<Integer>> lists = new ArrayList<>();
+        BinList[] lists = new BinList[numberOfThreads];
+        for (int i = 0; i < lists.length; i++) {
+            lists[i] = new BinList();
+        }
         //每个线程需要添加的数据的数目
         int pre_thread = list.length / numberOfThreads ;
-        //将整形数组转化为列表
-        List<Integer> mylist = Arrays.stream(list).boxed().collect(Collectors.toList());
+
         for (int i = 0; i < numberOfThreads; i++) {
-            List<Integer> tempList = new ArrayList<>();
-            if (i <= (numberOfThreads - 2)) {
-                tempList.addAll(mylist.subList(i * pre_thread, i * pre_thread + numberOfThreads));
-            }else {
-                tempList.addAll(mylist.subList(i * pre_thread, mylist.size()));
+            for (int j = i * pre_thread; j < i * pre_thread + pre_thread; j++) {
+                lists[i].put(list[j]);
             }
-            lists.add(tempList);
-            tempList.clear();
         }
         //初始化线程
+        addThreads = new AddThread[numberOfThreads];
         for (int i = 0; i < numberOfThreads; i++) {
-            addThreads[i] = new AddThread(lists.get(i));
+            addThreads[i] = new AddThread(lists[i].list);
         }
         //启动线程
         for (int i = 0; i < numberOfThreads; i++) {
@@ -205,24 +206,22 @@ public class TestSimpleTree {
 
         //并发地向列表中添加数据
         //每个线程需要添加的数据的集合的集合
-        List<List<Integer>> lists = new ArrayList<>();
+        BinList[] lists = new BinList[numberOfThreads];
+        for (int i = 0; i < lists.length; i++) {
+            lists[i] = new BinList();
+        }
         //每个线程需要添加的数据的数目
         int pre_thread = list.length / numberOfThreads ;
-        //将整形数组转化为列表
-        List<Integer> mylist = Arrays.stream(list).boxed().collect(Collectors.toList());
+
         for (int i = 0; i < numberOfThreads; i++) {
-            List<Integer> tempList = new ArrayList<>();
-            if (i <= (numberOfThreads - 2)) {
-                tempList.addAll(mylist.subList(i * pre_thread, i * pre_thread + numberOfThreads));
-            }else {
-                tempList.addAll(mylist.subList(i * pre_thread, mylist.size()));
+            for (int j = i * pre_thread; j < i * pre_thread + pre_thread; j++) {
+                lists[i].put(list[j]);
             }
-            lists.add(tempList);
-            tempList.clear();
         }
         //初始化线程
+        addThreads = new AddThread[numberOfThreads];
         for (int i = 0; i < numberOfThreads; i++) {
-            addThreads[i] = new AddThread(lists.get(i));
+            addThreads[i] = new AddThread(lists[i].list);
         }
         //启动线程
         for (int i = 0; i < numberOfThreads; i++) {
@@ -243,6 +242,7 @@ public class TestSimpleTree {
         int loop = DEFAULTNUMBER / numberOfThreads;
         for (int j = 0; j < loop; j++) {
             //初始化线程
+            removeMinThreads = new RemoveMinThread[numberOfThreads];
             for (int i = 0; i < numberOfThreads; i++) {
                 removeMinThreads[i] = new RemoveMinThread();
             }
@@ -326,7 +326,16 @@ public class TestSimpleTree {
         try {
             for (int i = 0; i < DEFAULTNUMBER; i++) {
                 Object temp = method_remove.invoke(mutantInstance,null);
-                vector.add((int)temp);
+                if (temp == null){
+                    Random random = new Random();
+                    temp = random.nextInt(1000) + 1000;
+                }
+                int result = (int) temp ;
+                if (vector.contains(result)){
+                    i--;
+                }else {
+                    vector.add((int)temp);
+                }
             }
         } catch (IllegalAccessException e) {
             e.printStackTrace();
@@ -393,6 +402,10 @@ public class TestSimpleTree {
             while (!flag){
                 try {
                     Object result = method_remove.invoke(mutantInstance,null);
+                    if (result == null){
+                        Random random = new Random();
+                        result = random.nextInt(1000) + 1000;
+                    }
                     flag = addElements(result);
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
@@ -400,6 +413,10 @@ public class TestSimpleTree {
                     e.printStackTrace();
                 }
             }
+        }
+
+        public void cancel(){
+            this.flag = true;
         }
 
     }
@@ -411,16 +428,24 @@ public class TestSimpleTree {
         }
         @Override
         public void run(){
-            for (int i = 0; i < mylist.size(); i++) {
-                try {
-                    method_add.invoke(mutantInstance,mylist.get(i));
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
+            while(!flag){
+                for (int i = 0; i < mylist.size(); i++) {
+                    try {
+                        method_add.invoke(mutantInstance,mylist.get(i));
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    } catch (InvocationTargetException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
+
         }
+        volatile boolean flag = false;
+        public void cancel(){
+            this.flag = true;
+        }
+
     }
 
 }

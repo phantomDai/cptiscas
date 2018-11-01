@@ -95,7 +95,7 @@ public class MR19_1 implements MetamorphicRelations {
 
                 //执行衍生测试数据并获取测试结果
                 TestProgram testProgramForFollowUp = new TestProgram();
-                testProgramForFollowUp.setDefaultNumber(m);
+                testProgramForFollowUp.setDefaultNumber(m,serviceName);
                 int[] followTopArray = testProgramForFollowUp.executeServiceAndGetResult(index,numberOfThreads,serviceName,
                         mutantSet.getMutantFullName(i),followUpArray);
 

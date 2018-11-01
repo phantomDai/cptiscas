@@ -1,12 +1,4 @@
-/*
- * SimpleTree.java
- *
- * Created on March 9, 2007, 9:48 PM
- *
- * From "Multiprocessor Synchronization and Concurrent Data Structures",
- * by Maurice Herlihy and Nir Shavit.
- * Copyright 2007 Elsevier Inc. All rights reserved.
- */
+package mutants.SimpleTree.RSK_remove1;
 
 
 

@@ -22,11 +22,12 @@ public class MR6 implements MetamorphicRelations {
 
     public int[] followUpList(int[] mylist,int[] toplist) {
         Random random = new Random();
-        int k = random.nextInt(toplist.length) + 1;
+        int k = random.nextInt(toplist.length / 2);
         List<Integer> list = new ArrayList<Integer>();
         for (int i = 0; i < mylist.length; i++) {
             list.add(mylist[i]);
         }
+
 
         for (int i = 0; i < k; i++) {
             List<Integer> templist = new ArrayList<Integer>();
