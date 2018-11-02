@@ -3,12 +3,10 @@ package mr;
 import set.mutants.MutantSet;
 import testdata.TestData;
 import testprograms.TestProgram;
-import util.log.LogRecorder;
-import util.log.WrongReport;
+import util.logs.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  *
