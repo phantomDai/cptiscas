@@ -7,7 +7,7 @@
  * by Maurice Herlihy and Nir Shavit.
  * Copyright 2007 Elsevier Inc. All rights reserved.
  */
-package mutants.SimpleLinear.simpleLinear5;
+package mutants.SimpleLinear.ROR_5;
 
 
 

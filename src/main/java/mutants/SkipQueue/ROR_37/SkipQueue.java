@@ -7,7 +7,7 @@
  * by Maurice Herlihy and Nir Shavit.
  * Copyright 2007 Elsevier Inc. All rights reserved.
  */
-package mutants.SkipQueue.skipQueue37;
+package mutants.SkipQueue.ROR_37;
 
 
 

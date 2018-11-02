@@ -7,7 +7,7 @@
  * by Maurice Herlihy and Nir Shavit.
  * Copyright 2007 Elsevier Inc. All rights reserved.
  */
-package mutants.SimpleTree.simpleTree36;
+package mutants.SimpleTree.AOR_36;
 
 
 

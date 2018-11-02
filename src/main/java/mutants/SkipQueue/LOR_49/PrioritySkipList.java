@@ -7,9 +7,9 @@
  * From "Multiprocessor Synchronization and Concurrent Data Structures",
  * by Maurice Herlihy and Nir Shavit.
  * Copyright 2007 Elsevier Inc. All rights reserved.
-package mutants.skipQueue.skipQueue49;
+package mutants.SkipQueue.LOR_49;
  */
-package mutants.SkipQueue.skipQueue49;
+package mutants.SkipQueue.LOR_49;
 
 import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicBoolean;

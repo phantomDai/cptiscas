@@ -66,6 +66,9 @@ public class ChangeMutantsName {
                 e.printStackTrace();
             }
         }
+
+        ChangeMutantsPackage changeMutantsPackage = new ChangeMutantsPackage();
+        changeMutantsPackage.changePackage();
     }
 
 

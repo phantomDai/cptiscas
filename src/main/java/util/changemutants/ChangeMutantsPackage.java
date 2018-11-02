@@ -23,7 +23,7 @@ public class ChangeMutantsPackage {
      */
     public void changePackage(){
         for (int i = 0; i < OBJECTNAMES.length; i++) {
-            String dirpath = System.getProperty("user.dir") + separator + "src" + separator +
+            String dirpath = System.getProperty("user.dir") + separator + "src" + separator + "main" + separator + "java" + separator +
                     "mutants" + separator + OBJECTNAMES[i] ;
             File dirFile = new File(dirpath);
             String[] mutantNames = dirFile.list();
@@ -42,9 +42,9 @@ public class ChangeMutantsPackage {
                         String tempStr = "";
                         while((tempStr = bufferedReader.readLine()) != null){
                             if (tempStr.contains("package")){
-                                stringBuffer.append(packageInfo);
+                                stringBuffer.append(packageInfo + "\n");
                             }else {
-                                stringBuffer.append(tempStr);
+                                stringBuffer.append(tempStr + "\n");
                             }
                         }
                         bufferedReader.close();

@@ -7,7 +7,7 @@
  * by Maurice Herlihy and Nir Shavit.
  * Copyright 2006 Elsevier Inc. All rights reserved.
  */
-package mutants.FineGrainedHeap.fineGrainedHeap151;
+package mutants.FineGrainedHeap.STD_151;
 
 
 

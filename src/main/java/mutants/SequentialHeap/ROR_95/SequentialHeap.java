@@ -7,7 +7,7 @@
  * by Maurice Herlihy and Nir Shavit.
  * Copyright 2007 Elsevier Inc. All rights reserved.
  */
-package mutants.SequentialHeap.sequentialHeap95;
+package mutants.SequentialHeap.ROR_95;
 
 
 

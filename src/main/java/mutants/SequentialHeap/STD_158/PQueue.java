@@ -1,4 +1,4 @@
-package mutants.SequentialHeap.sequentialHeap158;
+package mutants.SequentialHeap.STD_158;
 
 /**
  * Unbounded priority queue interface

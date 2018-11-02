@@ -1,4 +1,4 @@
-package mutants.SimpleLinear.simpleLinear17;
+package mutants.SimpleLinear.STD_17;
 
 /**
  * Unbounded priority queue interface
