@@ -31,8 +31,7 @@ public class MutantSet {
         mutants = new ArrayList<Mutant>();
 
         //对应文件的绝对路径
-        String path = System.getProperty("user.dir") + separator + "src" + separator + "main" + separator
-                + "java" + separator + "mutantsinfo" + separator + objectName + separator + scenario;
+        String path = System.getProperty("user.dir") + separator + "mutantsinfo" + separator + objectName + separator + scenario;
 
         File file = new File(path);
 

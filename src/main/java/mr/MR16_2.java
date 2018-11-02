@@ -6,8 +6,8 @@ import bin.BinList;
 import set.mutants.MutantSet;
 import testdata.TestData;
 import testprograms.TestProgram;
-import util.log.LogRecorder;
-import util.log.WrongReport;
+import util.logs.LogRecorder;
+import util.logs.WrongReport;
 
 import java.util.ArrayList;
 import java.util.Arrays;
