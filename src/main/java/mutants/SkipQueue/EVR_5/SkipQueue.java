@@ -12,7 +12,7 @@ package mutants.SkipQueue.EVR_5;
 
 
 
-import mutants.SkipQueue.skipQueue5.PrioritySkipList.Node;
+import mutants.SkipQueue.EVR_5.PrioritySkipList.Node;
 
 /**
  *

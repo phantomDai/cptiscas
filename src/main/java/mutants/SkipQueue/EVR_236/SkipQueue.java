@@ -11,7 +11,7 @@ package mutants.SkipQueue.EVR_236;
 
 
 
-import mutants.SkipQueue.skipQueue236.PrioritySkipList.Node;
+import mutants.SkipQueue.EVR_236.PrioritySkipList.Node;
 
 /**
  *

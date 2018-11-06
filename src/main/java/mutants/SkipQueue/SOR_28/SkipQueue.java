@@ -11,7 +11,7 @@ package mutants.SkipQueue.SOR_28;
 
 
 
-import mutants.SkipQueue.skipQueue28.PrioritySkipList.Node;
+import mutants.SkipQueue.SOR_28.PrioritySkipList.Node;
 
 /**
  *

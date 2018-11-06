@@ -38,7 +38,7 @@ public class SequentialHeap<T> implements PQueue<T> {
    * @param item Uninterpreted item.
    * @param priority item priority
    */
-  public void add(T item, int priority) {
+  public synchronized void add(T item, int priority) {
     int child = 0;
     heap[child].init(item, priority);
     while (child > ROOT) {
@@ -64,7 +64,7 @@ public class SequentialHeap<T> implements PQueue<T> {
    * Returns and removes least item in heap.
    * @return least item.
    */
-  public T removeMin() {
+  public synchronized T removeMin() {
     int bottom = --next;
     T item = heap[ROOT].item;
     swap(ROOT, bottom);
@@ -92,7 +92,7 @@ public class SequentialHeap<T> implements PQueue<T> {
     }
     return item;
   }
-  private void swap(int i, int j) {
+  private synchronized void swap(int i, int j) {
     HeapNode<T> node = heap[i];
     heap[i] = heap[j];
     heap[j] = node;
