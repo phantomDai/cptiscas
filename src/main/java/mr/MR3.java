@@ -73,13 +73,14 @@ public class MR3 implements MetamorphicRelations {
         for (int j = 0; j < SEED; j++) {
             //记录杀死的变异体的ID
             List<String> killedMutants = new ArrayList<>();
-            //开始记录时间
-            long startTime = System.currentTimeMillis();
+
+            List<Long> times = new ArrayList<>();
 
             for (int i = 0; i < mutantSet.size(); i++) {
 //            for (int i = 0; i < 1; i++) {
                 System.out.println("开始测试" + objectName + "的" + mutantSet.getMutantID(i));
-
+//开始记录时间
+                long startTime = System.currentTimeMillis();
                 //随机产生1W个数据
                 TestData testData = new TestData();
                 int[] randomArray = testData.generateTestData(j);
@@ -103,6 +104,9 @@ public class MR3 implements MetamorphicRelations {
                 //验证原始数据和衍生数据的执行结果是否符合蜕变关系
                 boolean flag = isConformToMR(sourceTopArray,followTopArray);
 
+                //执行测试用例需要的时间：包括：生成测试数据，执行测试，验证结果
+                long endtime = System.currentTimeMillis();
+                times.add(endtime - startTime);
                 //如果违反了蜕变关系，则添加到列表中，并记录执行结果
                 if (!flag){
                     killedMutants.add(mutantSet.getMutantID(i));
@@ -110,10 +114,15 @@ public class MR3 implements MetamorphicRelations {
                             mutantSet.getMutantID(i),sourceTopArray,followTopArray);
                 }
             }//i-遍历所有的变异体
-            long endtime = System.currentTimeMillis();
+            long time = 0;
+            for (int i = 0; i < times.size(); i++) {
+                time += times.get(i);
+            }
+            //清空记录时间的列表
+            times.clear();
             //将本次执行的结果记录到XLS文件中
             logRecorder.write(index,loop,j,numberOfThreads,objectName,"MR3",
-                    killedMutants,mutantSet.size(),endtime - startTime);
+                    killedMutants,mutantSet.size(),time);
         }//j-循环次数
     }
 
