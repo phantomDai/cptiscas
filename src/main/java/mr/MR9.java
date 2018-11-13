@@ -34,7 +34,7 @@ public class MR9 implements MetamorphicRelations {
         int length = random.nextInt(sourcetoplist.length) + 1;
         int[] templist = new int[length];
         for (int i = 0; i < length; i++) {
-            templist[i] = random.nextInt(9000 - max) + max;
+            templist[i] = random.nextInt(9400 - max) + max;
         }
         int[] followlist = new int[mylist.length + length];
         System.arraycopy(mylist,0,followlist,0,mylist.length);
@@ -82,7 +82,7 @@ public class MR9 implements MetamorphicRelations {
             List<Long> times = new ArrayList<>();
 
             for (int i = 0; i < mutantSet.size(); i++) {
-//            for (int i = 0; i < 1; i++) {
+//            for (int i = 9; i < 10; i++) {
                 System.out.println("开始测试" + objectName + "的" + mutantSet.getMutantID(i));
 
                 //开始记录时间
@@ -135,7 +135,7 @@ public class MR9 implements MetamorphicRelations {
     /**
      * 默认的循环次数
      */
-    private static final int SEED = 10;
+    private static final int SEED = 5;
 
 
     /**
@@ -149,4 +149,16 @@ public class MR9 implements MetamorphicRelations {
      */
     private static final String[] MUTANTSNAME = {"sequentialAndsequential", "sequentialAndconcurrent",
             "concurrentAndsequential", "concurrentAndconcurrent"} ;
+
+
+    public static void main(String[] args) {
+        MR9 mr = new MR9();
+        String[] names = {"SimpleLinear","SimpleTree","SequentialHeap","FineGrainedHeap","SkipQueue"};
+
+//        String[] names = {"SimpleTree"};
+        for (int i = 0; i < names.length; i++) {
+            mr.executeService(0,0,10,names[i]);
+        }
+
+    }
 }

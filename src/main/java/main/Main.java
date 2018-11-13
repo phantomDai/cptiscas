@@ -26,7 +26,12 @@ public class Main {
     /**
      * 测试对象的名字
      */
-    private static final String[] OBJECTNAMES = {"SimpleLinear","SimpleTree","SequentialHeap","FineGrainedHeap","SkipQueue"};
+    private static final String[] OBJECTNAMES = {"SimpleLinear","SimpleTree","SequentialHeap",
+            "FineGrainedHeap","SkipQueue"};
+//    private static final String[] OBJECTNAMES = {"SimpleLinear","SimpleTree"};
+//    private static final String[] OBJECTNAMES = {"FineGrainedHeap"};
+//    private static final String[] OBJECTNAMES = {"SkipQueue"};
+//    private static final String[] OBJECTNAMES = {"SequentialHeap"};
 
 
     /**
@@ -43,7 +48,7 @@ public class Main {
     /**
      * 循环控制
      */
-    private static final int LOOP = 10;
+    private static final int LOOP = 5;
 
     /**MR的类对象*/
     private Class MRClass;

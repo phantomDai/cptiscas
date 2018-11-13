@@ -115,7 +115,12 @@ public class TestSequentialHeap {
         try {
             clazz = Class.forName(myMutantFullName);
             constructor = clazz.getConstructor(int.class);
-            mutantInstance = constructor.newInstance(lengthOfList);
+            if (lengthOfList < 10000){
+                mutantInstance = constructor.newInstance(10000 + 500);
+            }else {
+                mutantInstance = constructor.newInstance(lengthOfList + 500);
+            }
+
             method_add = clazz.getMethod(METHODNAME_ADD,Object.class,int.class);
             method_remove = clazz.getMethod(METHODNAME_REMOVE,null);
         } catch (ClassNotFoundException e) {

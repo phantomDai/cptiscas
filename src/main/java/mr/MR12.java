@@ -34,31 +34,59 @@ public class MR12 implements MetamorphicRelations{
         this.sourcetoplist = sourcetoplist;
         Random random = new Random();
         //随机一个x序列的长度在10-10000之间
-        int sublength = random.nextInt(mylist.length - 9) + 10;
-        int[] x = new int[sublength];
+        int k = random.nextInt(mylist.length) / 2 ;
+        int[] x = new int[k];
         for (int i = 0; i < x.length; i++) {
             x[i] = random.nextInt(NUMBERRANGE);
+//            x[i] = random.nextInt(20);
         }
+//
+//        for (int i = 0; i < x.length; i++) {
+//            System.out.print(x[i] + ", ");
+//        }
+//        System.out.println();
+
+
+
         this.tempx = x ;
-        List<Integer> tempsourcelist = new ArrayList<Integer>();
+        List<Integer> vlist = new ArrayList<Integer>();
         for (int i = 0; i < mylist.length; i++) {
-            tempsourcelist.add(mylist[i]);
+            vlist.add(mylist[i]);
         }
         //将数组转化为list
         List<Integer> tempxlist = Arrays.stream(x).boxed().collect(Collectors.toList());
         for (int i = 0; i < tempxlist.size(); i++) {
-            int temp = tempxlist.get(i);
-            for (int j = 0; j < tempsourcelist.size(); j++) {
-                if (tempsourcelist.get(j) == temp){
-                    tempsourcelist.remove(j);
-                    break;
-                }
+            if (vlist.contains(tempxlist.get(i))){
+                vlist.remove(tempxlist.get(i));
             }
         }
-        int[] returnlist = new int[tempsourcelist.size()];
-        for (int i = 0; i < tempsourcelist.size(); i++) {
-            returnlist[i] = tempsourcelist.get(i);
+
+        int[] returnlist = new int[vlist.size()];
+        for (int i = 0; i < vlist.size(); i++) {
+            returnlist[i] = vlist.get(i);
         }
+
+        //得到tempx
+        //首先将sourceTopArray转化为List
+        List<Integer> sourceArray = new ArrayList<>();
+        List<Integer> xlist = new ArrayList<>();
+        for (int i = 0; i < sourcetoplist.length; i++) {
+            sourceArray.add(sourcetoplist[i]);
+        }
+
+        for (int i = 0; i < sourceArray.size(); i++) {
+            if (tempxlist.contains(sourceArray.get(i))){
+                xlist.add(sourceArray.get(i));
+            }
+        }
+
+        if (xlist.size() != 0){
+            tempx = new int[xlist.size()];
+            for (int i = 0; i < xlist.size(); i++) {
+                tempx[i] = xlist.get(i);
+            }
+        }
+
         return returnlist;
     }
 
@@ -192,7 +220,7 @@ public class MR12 implements MetamorphicRelations{
     /**
      * 默认的循环次数
      */
-    private static final int SEED = 10;
+    private static final int SEED = 5;
 
 
     /**
@@ -206,6 +234,31 @@ public class MR12 implements MetamorphicRelations{
      */
     private static final String[] MUTANTSNAME = {"sequentialAndsequential", "sequentialAndconcurrent",
             "concurrentAndsequential", "concurrentAndconcurrent"} ;
+
+
+    public static void main(String[] args) {
+        MR12 mr = new MR12();
+//        int[] data = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20};
+//        int[] sourcetop = {1,2,3,4,5,6,7,8,9,10};
+//
+//        int[] follow = mr.followUpList(data,sourcetop);
+//        for (int i = 0; i < follow.length; i++) {
+//            System.out.print(follow[i] + ", ");
+//        }
+//        System.out.println();
+//        for (int i = 0; i < mr.tempx.length; i++) {
+//            System.out.print(mr.tempx[i] + ",");
+//        }
+
+
+
+        String[] names = {"SimpleLinear","SimpleTree","SequentialHeap","FineGrainedHeap","SkipQueue"};
+//        String[] names = {"SimpleLinear"};
+        for (int i = 0; i < names.length; i++) {
+            mr.executeService(0,0,10,names[i]);
+        }
+
+    }
 
 
 }

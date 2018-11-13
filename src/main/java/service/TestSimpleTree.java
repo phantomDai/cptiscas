@@ -350,6 +350,10 @@ public class TestSimpleTree {
      */
     private void setRange(int numberofList){
         int temp = -1;
+        if (numberofList < 10000){
+            numberofList = 10000;
+        }
+
         do{
             temp++;
         }while (Math.pow(2,temp) < numberofList);
@@ -379,7 +383,7 @@ public class TestSimpleTree {
      */
     private synchronized boolean addElements(Object element){
         if (element == null){
-            vector.add(random.nextInt(1000) + 7000);
+            vector.add(random.nextInt(1000) + 1000);
             return true;
         }else {
             if (vector.contains(Integer.parseInt(element.toString()))) {

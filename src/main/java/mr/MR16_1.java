@@ -197,7 +197,7 @@ public class MR16_1 implements MetamorphicRelations {
     /**
      * 默认的循环次数
      */
-    private static final int SEED = 10;
+    private static final int SEED = 5;
 
 
     /**
@@ -218,5 +218,15 @@ public class MR16_1 implements MetamorphicRelations {
      */
     private static final int DEFAULTNUMBER = 10 ;
 
+
+    public static void main(String[] args) {
+        MR16_1 mr = new MR16_1();
+        String[] names = {"SimpleLinear","SimpleTree","SequentialHeap","FineGrainedHeap","SkipQueue"};
+//        String[] names = {"FineGrainedHeap"};
+        for (int i = 0; i < names.length; i++) {
+            mr.executeService(0,0,10,names[i]);
+        }
+
+    }
 
 }

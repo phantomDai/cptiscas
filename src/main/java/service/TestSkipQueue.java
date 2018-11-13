@@ -272,7 +272,11 @@ public class TestSkipQueue {
                 mutantInstance = constructor.newInstance();
             }else {
                 constructor = clazz.getConstructor(int.class);
-                mutantInstance = constructor.newInstance(lengthOfList);
+                if (lengthOfList < 10000){
+                    mutantInstance = constructor.newInstance(10000);
+                }else {
+                    mutantInstance = constructor.newInstance(lengthOfList);
+                }
             }
             method_add = clazz.getMethod(METHODNAME_ADD,Object.class,int.class);
             method_remove = clazz.getMethod(METHODNAME_REMOVE,null);

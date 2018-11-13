@@ -130,7 +130,7 @@ public class MR5 implements MetamorphicRelations {
     /**
      * 默认的循环次数
      */
-    private static final int SEED = 10;
+    private static final int SEED = 5;
 
 
     /**

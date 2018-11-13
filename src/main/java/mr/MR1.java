@@ -19,23 +19,7 @@ import java.util.*;
  */
 public class MR1 implements MetamorphicRelations {
 
-    /**
-     * 默认的循环次数
-     */
-    private static final int SEED = 10;
 
-
-    /**
-     * 服务类的前缀
-     */
-    private static final String PREFIXPATHOFSERVICE = "service." ;
-
-
-    /**
-     * 每一个实验对象需要测试的变异体名字
-     */
-    private static final String[] MUTANTSNAME = {"sequentialAndsequential", "sequentialAndconcurrent",
-            "concurrentAndsequential", "concurrentAndconcurrent"} ;
 
 
     @Override
@@ -155,9 +139,34 @@ public class MR1 implements MetamorphicRelations {
             //将本次执行的结果记录到XLS文件中
             logRecorder.write(index,loop,j,numberOfThreads,objectName,"MR1",
                     killedMutants,mutantSet.size(),time);
-
-
         }//j-循环次数
+    }
+
+    /**
+     * 默认的循环次数
+     */
+    private static final int SEED = 5;
+
+
+    /**
+     * 服务类的前缀
+     */
+    private static final String PREFIXPATHOFSERVICE = "service." ;
+
+
+    /**
+     * 每一个实验对象需要测试的变异体名字
+     */
+    private static final String[] MUTANTSNAME = {"sequentialAndsequential", "sequentialAndconcurrent",
+            "concurrentAndsequential", "concurrentAndconcurrent"} ;
+
+    public static void main(String[] args) {
+        MR7 mr = new MR7();
+        String[] names = {"SimpleLinear","SimpleTree","SequentialHeap","FineGrainedHeap","SkipQueue"};
+
+        for (int i = 0; i < names.length; i++) {
+            mr.executeService(3,0,10,names[i]);
+        }
     }
 
 }
