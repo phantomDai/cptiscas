@@ -136,7 +136,7 @@ public class MR2 implements MetamorphicRelations {
     /**
      * 默认的循环次数
      */
-    private static final int SEED = 5;
+    private static final int SEED = 1;
 
 
     /**
@@ -151,7 +151,14 @@ public class MR2 implements MetamorphicRelations {
     private static final String[] MUTANTSNAME = {"sequentialAndsequential", "sequentialAndconcurrent",
             "concurrentAndsequential", "concurrentAndconcurrent"} ;
 
+    public static void main(String[] args) {
+        MR2 mr = new MR2();
+        String[] names = {"FineGrainedHeap","SkipQueue"};
 
+        for (int i = 0; i < names.length; i++) {
+            mr.executeService(3,0,5,names[i]);
+        }
+    }
 
 
 

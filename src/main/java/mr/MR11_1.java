@@ -121,7 +121,7 @@ public class MR11_1 implements MetamorphicRelations {
     /**
      * 默认的循环次数
      */
-    private static final int SEED = 5;
+    private static final int SEED = 1;
 
 
     /**

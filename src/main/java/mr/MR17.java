@@ -154,7 +154,7 @@ public class MR17 implements MetamorphicRelations {
     /**
      * 默认的循环次数
      */
-    private static final int SEED = 5;
+    private static final int SEED = 1;
 
 
     /**
@@ -179,9 +179,10 @@ public class MR17 implements MetamorphicRelations {
     public static void main(String[] args) {
         MR17 mr = new MR17();
 //        String[] names = {"SimpleLinear","SimpleTree","SequentialHeap","FineGrainedHeap","SkipQueue"};
-        String[] names = {"FineGrainedHeap"};
+        String[] names = {"FineGrainedHeap","SkipQueue"};
+
         for (int i = 0; i < names.length; i++) {
-            mr.executeService(0,0,10,names[i]);
+            mr.executeService(3,0,5,names[i]);
         }
 
     }

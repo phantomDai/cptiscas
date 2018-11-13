@@ -26,12 +26,12 @@ public class Main {
     /**
      * 测试对象的名字
      */
-    private static final String[] OBJECTNAMES = {"SimpleLinear","SimpleTree","SequentialHeap",
-            "FineGrainedHeap","SkipQueue"};
+//    private static final String[] OBJECTNAMES = {"SimpleLinear","SimpleTree","SequentialHeap",
+//            "FineGrainedHeap","SkipQueue"};
 //    private static final String[] OBJECTNAMES = {"SimpleLinear","SimpleTree"};
 //    private static final String[] OBJECTNAMES = {"FineGrainedHeap"};
 //    private static final String[] OBJECTNAMES = {"SkipQueue"};
-//    private static final String[] OBJECTNAMES = {"SequentialHeap"};
+    private static final String[] OBJECTNAMES = {"SequentialHeap"};
 
 
     /**
@@ -75,40 +75,25 @@ public class Main {
     public void startExecuteTesting(){
         for (int i = 0; i < OBJECTNAMES.length; i++) {
             //如果待测程序是“sequentialHeap”的话是需要测试1种场景
-            if (OBJECTNAMES[i].equals("SequentialHeap")){
-                for (int j = 0; j < MRNAMES.length; j++) {
-                    String MRName = MRPACKAGE + MRNAMES[j] ;
-                    //初始化MR的对象
-                    initializeObject(MRName);
-                    for (int k = 0; k < LOOP; k++) {
-                        try {
-                            MRmethod_executeService.invoke(instance,0,k,10,OBJECTNAMES[i]);
-                        } catch (IllegalAccessException e) {
-                            e.printStackTrace();
-                        } catch (InvocationTargetException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }else {
-                for (int j = 0; j < MRNAMES.length; j++) {
-                    String MRName = MRPACKAGE + MRNAMES[j];
-                    initializeObject(MRName);
-                    for (int k = 0; k < LOOP; k++) {
-                        for (int l = 0; l < INDEXS.length; l++) {
-                            for (int m = 0; m < NUMBEROFTHREADS.length; m++) {
-                                try {
-                                    MRmethod_executeService.invoke(instance,INDEXS[l],k,NUMBEROFTHREADS[m],OBJECTNAMES[i]);
-                                } catch (IllegalAccessException e) {
-                                    e.printStackTrace();
-                                } catch (InvocationTargetException e) {
-                                    e.printStackTrace();
-                                }
+
+            for (int j = 0; j < MRNAMES.length; j++) {
+                String MRName = MRPACKAGE + MRNAMES[j];
+                initializeObject(MRName);
+                for (int k = 0; k < LOOP; k++) {
+                    for (int l = 0; l < INDEXS.length; l++) {
+                        for (int m = 0; m < NUMBEROFTHREADS.length; m++) {
+                            try {
+                                MRmethod_executeService.invoke(instance,INDEXS[l],k,NUMBEROFTHREADS[m],OBJECTNAMES[i]);
+                            } catch (IllegalAccessException e) {
+                                e.printStackTrace();
+                            } catch (InvocationTargetException e) {
+                                e.printStackTrace();
                             }
                         }
                     }
                 }
             }
+
         }
     }
 
