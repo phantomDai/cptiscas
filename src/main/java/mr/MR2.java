@@ -6,7 +6,7 @@ import testdata.TestData;
 import testprograms.TestProgram;
 import util.logs.LogRecorder;
 import util.logs.WrongReport;
-
+import static mr.util.Constant.SEED;
 import java.util.*;
 
 /**
@@ -133,11 +133,6 @@ public class MR2 implements MetamorphicRelations {
         }//j-循环次数
     }
 
-    /**
-     * 默认的循环次数
-     */
-    private static final int SEED = 1;
-
 
     /**
      * 服务类的前缀
@@ -153,7 +148,11 @@ public class MR2 implements MetamorphicRelations {
 
     public static void main(String[] args) {
         MR2 mr = new MR2();
-        String[] names = {"FineGrainedHeap","SkipQueue"};
+//        String[] names = {"SimpleLinear","SimpleTree","SequentialHeap","FineGrainedHeap","SkipQueue"};
+//        String[] names = {"FineGrainedHeap","SkipQueue"};
+//        String[] names = {"SimpleLinear"};
+        String[] names = {"SimpleTree"};
+//        String[] names = {"SkipQueue"};
 
         for (int i = 0; i < names.length; i++) {
             mr.executeService(3,0,5,names[i]);

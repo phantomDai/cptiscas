@@ -8,7 +8,7 @@ import util.logs.LogRecorder;
 import util.logs.WrongReport;
 
 import java.util.*;
-
+import static mr.util.Constant.SEED;
 /**
  *
  * @author phantom
@@ -87,12 +87,15 @@ public class MR17 implements MetamorphicRelations {
                 //获取原始测试数据
                 int[] sourceArray = sourceList(randomArray);
 
+
                 //执行原始测试数据并获取测试结果
                 TestProgram testProgramForSource = new TestProgram();
                 //根据本蜕变关系设置取出的数据的总个数
                 testProgramForSource.setDefaultNumber(DEFAULTNUMBER,serviceName);
                 int[] sourceTopArray = testProgramForSource.executeServiceAndGetResult(index,numberOfThreads,serviceName,
                         mutantSet.getMutantFullName(i),sourceArray);
+
+
 
                 //获取衍生测试数据
                 BinList[] followUpArrays = followUpList(sourceArray,sourceTopArray);
@@ -112,19 +115,27 @@ public class MR17 implements MetamorphicRelations {
                 int[] followTopArray1 = testProgramForFollowUp1.executeServiceAndGetResult(index,numberOfThreads,serviceName,
                         mutantSet.getMutantFullName(i),followUpArray1);
 
+
+
                 TestProgram testProgramForFollowUp2 = new TestProgram();
                 int[] followTopArray2 = testProgramForFollowUp2.executeServiceAndGetResult(index,numberOfThreads,serviceName,
                         mutantSet.getMutantFullName(i),followUpArray2);
+
+
 
                 //合并followUpArray1 和followUpArray2
                 int[] followArray = new int[followTopArray1.length + followTopArray2.length];
                 System.arraycopy(followTopArray1,0,followArray,0,followTopArray1.length);
                 System.arraycopy(followTopArray2,0,followArray,followTopArray1.length,followTopArray2.length);
 
+
+
                 //执行followArray，并获取测试结果
                 TestProgram testProgramForFollowArray = new TestProgram();
                 int[] followTopArray = testProgramForFollowArray.executeServiceAndGetResult(index,numberOfThreads,serviceName,
                         mutantSet.getMutantFullName(i),followArray);
+
+
 
                 //验证原始数据和衍生数据的执行结果是否符合蜕变关系
                 boolean flag = isConformToMR(sourceTopArray,followTopArray);
@@ -149,17 +160,14 @@ public class MR17 implements MetamorphicRelations {
             logRecorder.write(index,loop,j,numberOfThreads,objectName,"MR17",
                     killedMutants,mutantSet.size(),time);
         }//j-循环次数
+        System.exit(0);
     }
 
-    /**
-     * 默认的循环次数
-     */
-    private static final int SEED = 1;
+
 
 
     /**
-     * 服务类的前缀
-     */
+      */
     private static final String PREFIXPATHOFSERVICE = "service." ;
 
 
@@ -179,11 +187,16 @@ public class MR17 implements MetamorphicRelations {
     public static void main(String[] args) {
         MR17 mr = new MR17();
 //        String[] names = {"SimpleLinear","SimpleTree","SequentialHeap","FineGrainedHeap","SkipQueue"};
-        String[] names = {"FineGrainedHeap","SkipQueue"};
+        //        String[] names = {"SimpleLinear","SimpleTree","SequentialHeap","FineGrainedHeap","SkipQueue"};
+//        String[] names = {"FineGrainedHeap","SkipQueue"};
+        String[] names = {"SimpleLinear"};
+//        String[] names = {"SimpleTree"};
+//        String[] names = {"SkipQueue"};
 
         for (int i = 0; i < names.length; i++) {
             mr.executeService(3,0,5,names[i]);
         }
+        System.out.println("测试完毕");
 
     }
 

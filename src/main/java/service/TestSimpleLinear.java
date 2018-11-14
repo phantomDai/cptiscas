@@ -288,7 +288,8 @@ public class TestSimpleLinear {
     public int[] getResults(){
         if (vector.size() < DEFAULTNUMBER){
             Random random = new Random();
-            for (int i = 0; i < (DEFAULTNUMBER - vector.size()); i++) {
+            int temp = vector.size();
+            for (int i = 0; i < (DEFAULTNUMBER - temp); i++) {
                 vector.add(random.nextInt(1000) + 1000);
             }
         }

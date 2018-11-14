@@ -1,8 +1,11 @@
 package service;
 
+import bin.BinList;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Random;
 import java.util.Vector;
 
@@ -48,6 +51,13 @@ public class TestSequentialHeap {
     /**产生数据的对象*/
     Random random = new Random();
 
+
+    /**执行取数据的线程组*/
+    RemoveMinThread[] removeMinThreads;
+
+    /**添加数据的线程组*/
+    AddThread[] addThreads;
+
     /**
      * 添加数据的方式：顺序
      * 取数据的方式：顺序
@@ -83,6 +93,228 @@ public class TestSequentialHeap {
         }
     }
 
+
+    /**
+     * 添加数据的方式：顺序
+     * 取数据的方式：并发
+     * @param list 生成的随机序列
+     * @param myMutantFullName  具体的变异体名字或者源程序的名字
+     * @param numberOfThreads 开启的线程数目
+     */
+    public void sequentialAndconcurrent(int[] list, String myMutantFullName, int numberOfThreads){
+        //清空集合
+        vector.clear();
+
+        //获取一个实例
+        getInstance(list.length,myMutantFullName);
+
+        //顺序地添加数据
+        sequentAddDataToList(list);
+
+        //并发的移除数据
+        //根据开启的线程数目决定循环的次数
+        int loop = DEFAULTNUMBER / numberOfThreads;
+        for (int j = 0; j < loop; j++) {
+            //初始化线程
+            removeMinThreads = new RemoveMinThread[numberOfThreads];
+
+            for (int i = 0; i < numberOfThreads; i++) {
+                removeMinThreads[i] = new RemoveMinThread();
+            }
+            //开启线程
+            for (int i = 0; i < numberOfThreads; i++) {
+                removeMinThreads[i].start();
+            }
+            //执行线程中的任务
+            for (int i = 0; i < numberOfThreads; i++) {
+                try {
+                    removeMinThreads[i].join(100);
+                    if (removeMinThreads[i].isAlive()){
+                        for (int k = 0; k < numberOfThreads; k++) {
+                            removeMinThreads[k].cancel();
+                        }
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+
+
+    /**
+     * 添加数据的方式：并发
+     * 取数据的方式：顺序
+     * @param list 生成的随机序列
+     * @param myMutantFullName 具体的变异体名字或者源程序的名字
+     * @param numberOfThreads 开启的线程数目
+     */
+    public void concurrentAndsequential(int[] list, String myMutantFullName, int numberOfThreads){
+
+        //获取一个实例
+
+        getInstance(list.length,myMutantFullName);
+
+        //并发地向列表中添加数据
+        //每个线程需要添加的数据的集合的集合
+        BinList[] lists = new BinList[numberOfThreads];
+        for (int i = 0; i < lists.length; i++) {
+            lists[i] = new BinList();
+        }
+        //每个线程需要添加的数据的数目
+        int pre_thread = list.length / numberOfThreads ;
+
+        for (int i = 0; i < numberOfThreads; i++) {
+            for (int j = i * pre_thread; j < i * pre_thread + pre_thread; j++) {
+                lists[i].put(list[j]);
+            }
+        }
+
+        //初始化线程
+        addThreads = new AddThread[numberOfThreads];
+        for (int i = 0; i < numberOfThreads; i++) {
+            addThreads[i] = new AddThread(lists[i].list);
+        }
+        //启动线程
+        for (int i = 0; i < numberOfThreads; i++) {
+            addThreads[i].start();
+        }
+        //执行线程中的任务
+        for (int i = 0; i < numberOfThreads; i++) {
+            try {
+                addThreads[i].join(100);
+                if (addThreads[i].isAlive()){
+                    for (int j = 0; j < numberOfThreads; j++) {
+                        addThreads[j].cancel();
+                    }
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        //顺序地在列表中取数据
+        sequentRemoveDataFromList();
+
+
+    }
+
+
+    /**
+     * 添加数据的方式：并发
+     * 取数据的方式：并发
+     * @param list 生成的随机序列
+     * @param myMutantFullName 具体的变异体名字或者源程序的名字
+     * @param numberOfThreads 开启的线程数目
+     */
+    public void concurrentAndconcurrent(int[] list, String myMutantFullName, int numberOfThreads){
+
+        /*********************  并发地添加数据  ******************************/
+        //获取一个实例
+        getInstance(list.length,myMutantFullName);
+
+        //并发地向列表中添加数据
+        //每个线程需要添加的数据的集合的集合
+        BinList[] lists = new BinList[numberOfThreads];
+        for (int i = 0; i < lists.length; i++) {
+            lists[i] = new BinList();
+        }
+        //每个线程需要添加的数据的数目
+        int pre_thread = list.length / numberOfThreads ;
+
+        for (int i = 0; i < numberOfThreads; i++) {
+            for (int j = i * pre_thread; j < i * pre_thread + pre_thread; j++) {
+                lists[i].put(list[j]);
+            }
+        }
+
+        //初始化线程
+        addThreads = new AddThread[numberOfThreads];
+        for (int i = 0; i < numberOfThreads; i++) {
+            addThreads[i] = new AddThread(lists[i].list);
+        }
+        //启动线程
+        for (int i = 0; i < numberOfThreads; i++) {
+            addThreads[i].start();
+        }
+        //执行线程中的任务
+        for (int i = 0; i < numberOfThreads; i++) {
+            try {
+                addThreads[i].join(100);
+                if (addThreads[i].isAlive()){
+                    for (int j = 0; j < numberOfThreads; j++) {
+                        addThreads[j].cancel();
+                    }
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        /*********************  并发地取数据  ******************************/
+        //并发的移除数据
+        //根据开启的线程数目决定循环的次数
+        int loop = DEFAULTNUMBER / numberOfThreads;
+        for (int j = 0; j < loop; j++) {
+            //初始化线程
+            removeMinThreads = new RemoveMinThread[numberOfThreads];
+            for (int i = 0; i < numberOfThreads; i++) {
+                removeMinThreads[i] = new RemoveMinThread();
+            }
+            //开启线程
+            for (int i = 0; i < numberOfThreads; i++) {
+                removeMinThreads[i].start();
+            }
+            //执行线程中的任务
+            for (int i = 0; i < numberOfThreads; i++) {
+                try {
+                    removeMinThreads[i].join(100);
+                    if (removeMinThreads[i].isAlive()){
+                        for (int k = 0; k < numberOfThreads; k++) {
+                            removeMinThreads[k].cancel();
+                        }
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+
+
+
+
+    /**
+     * 逐个从数据结构中移除数据
+     */
+    private void sequentRemoveDataFromList(){
+        //清空容器
+        vector.clear();
+        //取数据
+        try {
+            for (int i = 0; i < DEFAULTNUMBER; i++) {
+                Object temp = method_remove.invoke(mutantInstance,null);
+                if (temp == null){
+                    Random random = new Random();
+                    temp = random.nextInt(1000) + 1000;
+                }
+                int result = (int) temp ;
+                if (vector.contains(result)){
+                    i--;
+                }else {
+                    vector.add((int)temp);
+                }
+
+            }
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * 根据MR的需求改变移除的数据的个数
      * @param defaultnumber 配置移除数据的个数
@@ -98,6 +330,13 @@ public class TestSequentialHeap {
      * @return 返回优先级最高的数据
      */
     public int[] getResults(){
+        if (vector.size() < DEFAULTNUMBER){
+            Random random = new Random();
+            int temp = vector.size();
+            for (int i = 0; i < (DEFAULTNUMBER - temp); i++) {
+                vector.add(random.nextInt(1000) + 1000);
+            }
+        }
         int[] tempList = new int[vector.size()];
         for (int i = 0; i < vector.size(); i++) {
             tempList[i] = vector.get(i);
@@ -169,6 +408,72 @@ public class TestSequentialHeap {
                 return true;
             }
         }
+    }
+
+
+
+    /**
+     * 从列表中取数据的线程
+     */
+    class RemoveMinThread extends Thread{
+
+
+        @Override
+        public void run(){
+            while (!flag){
+                try {
+                    Object result = method_remove.invoke(mutantInstance,null);
+                    if (result == null){
+                        Random random = new Random();
+                        result = random.nextInt(1000) + 1000;
+                    }
+                    flag = addElements(result);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        volatile boolean flag = false;
+        public void cancel(){
+            this.flag = true;
+        }
+
+    }
+
+    /**
+     * 向列表中存数据的线程
+     */
+    class AddThread extends  Thread{
+        List<Integer> mylist;
+        AddThread(List<Integer> list){
+            this.mylist = list;
+        }
+        @Override
+        public void run(){
+            while(!flag){
+                for (int i = 0; i < mylist.size(); i++) {
+                    try {
+                        if (i > 10000){
+                            System.out.println("i 的值过大，" + i);
+                        }
+                        method_add.invoke(mutantInstance,mylist.get(i),mylist.get(i));
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    } catch (InvocationTargetException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+
+        volatile boolean flag = false;
+        public void cancel(){
+            this.flag = true;
+        }
+
     }
 
 }

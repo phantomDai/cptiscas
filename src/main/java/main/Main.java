@@ -28,10 +28,10 @@ public class Main {
      */
 //    private static final String[] OBJECTNAMES = {"SimpleLinear","SimpleTree","SequentialHeap",
 //            "FineGrainedHeap","SkipQueue"};
-//    private static final String[] OBJECTNAMES = {"SimpleLinear","SimpleTree"};
+    private static final String[] OBJECTNAMES = {"SimpleLinear","SimpleTree"};
 //    private static final String[] OBJECTNAMES = {"FineGrainedHeap"};
 //    private static final String[] OBJECTNAMES = {"SkipQueue"};
-    private static final String[] OBJECTNAMES = {"SequentialHeap"};
+//    private static final String[] OBJECTNAMES = {"SequentialHeap"};
 
 
     /**
@@ -121,5 +121,6 @@ public class Main {
     public static void main(String[] args) {
         Main main = new Main();
         main.startExecuteTesting();
+        System.exit(0);
     }
 }

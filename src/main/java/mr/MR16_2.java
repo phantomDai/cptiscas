@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
-
+import static mr.util.Constant.SEED;
 /**
  *m的取值范围在11-19之间
  * @author phantom
@@ -194,10 +194,7 @@ public class MR16_2 implements MetamorphicRelations {
         }//j-循环次数
     }
 
-    /**
-     * 默认的循环次数
-     */
-    private static final int SEED = 1;
+
 
 
     /**
@@ -220,7 +217,11 @@ public class MR16_2 implements MetamorphicRelations {
 
     public static void main(String[] args) {
         MR16_2 mr = new MR16_2();
-        String[] names = {"FineGrainedHeap","SkipQueue"};
+        //        String[] names = {"SimpleLinear","SimpleTree","SequentialHeap","FineGrainedHeap","SkipQueue"};
+//        String[] names = {"FineGrainedHeap","SkipQueue"};
+//        String[] names = {"SimpleLinear"};
+        String[] names = {"SimpleTree"};
+//        String[] names = {"SkipQueue"};
 
         for (int i = 0; i < names.length; i++) {
             mr.executeService(3,0,5,names[i]);

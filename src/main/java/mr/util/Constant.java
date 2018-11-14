@@ -6,7 +6,10 @@ package mr.util;
  * @date 2018/11/13/013
  */
 public class Constant {
-
+    /**
+     * 默认的循环次数
+     */
+    public static final int SEED = 5;
 
 
 

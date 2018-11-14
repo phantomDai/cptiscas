@@ -8,7 +8,7 @@ import util.logs.LogRecorder;
 import util.logs.WrongReport;
 
 import java.util.*;
-
+import static mr.util.Constant.SEED;
 /**
  * mr3该蜕变关系的含义是：在原始序列串联k个相同的序列top结果仍然和原始序列的结果相同
  * 关于k值的说明：k值是在1-10之间任意取值
@@ -126,11 +126,6 @@ public class MR3 implements MetamorphicRelations {
         }//j-循环次数
     }
 
-    /**
-     * 默认的循环次数
-     */
-    private static final int SEED = 1;
-
 
     /**
      * 服务类的前缀
@@ -146,7 +141,11 @@ public class MR3 implements MetamorphicRelations {
 
     public static void main(String[] args) {
         MR3 mr = new MR3();
-        String[] names = {"FineGrainedHeap","SkipQueue"};
+        //        String[] names = {"SimpleLinear","SimpleTree","SequentialHeap","FineGrainedHeap","SkipQueue"};
+//        String[] names = {"FineGrainedHeap","SkipQueue"};
+//        String[] names = {"SimpleLinear"};
+        String[] names = {"SimpleTree"};
+//        String[] names = {"SkipQueue"};
 
         for (int i = 0; i < names.length; i++) {
             mr.executeService(3,0,5,names[i]);

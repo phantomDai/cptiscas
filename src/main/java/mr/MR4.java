@@ -8,7 +8,7 @@ import util.logs.LogRecorder;
 import util.logs.WrongReport;
 
 import java.util.*;
-
+import static mr.util.Constant.SEED;
 /**
  * mr4蜕变关系：在原始序列的后面串联一个原始序列的子集，子集元素的个数分别为原始子集的1/10，3/10，5/10，7/10，10/10
  * @author phantom
@@ -132,10 +132,6 @@ public class MR4 implements MetamorphicRelations {
         }//j-循环次数
     }
 
-    /**
-     * 默认的循环次数
-     */
-    private static final int SEED = 1;
 
 
     /**
@@ -152,7 +148,11 @@ public class MR4 implements MetamorphicRelations {
 
     public static void main(String[] args) {
         MR4 mr = new MR4();
-        String[] names = {"FineGrainedHeap","SkipQueue"};
+        //        String[] names = {"SimpleLinear","SimpleTree","SequentialHeap","FineGrainedHeap","SkipQueue"};
+//        String[] names = {"FineGrainedHeap","SkipQueue"};
+//        String[] names = {"SimpleLinear"};
+        String[] names = {"SimpleTree"};
+//        String[] names = {"SkipQueue"};
 
         for (int i = 0; i < names.length; i++) {
             mr.executeService(3,0,5,names[i]);
