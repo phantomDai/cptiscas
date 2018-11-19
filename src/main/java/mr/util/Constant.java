@@ -9,7 +9,7 @@ public class Constant {
     /**
      * 默认的循环次数
      */
-    public static final int SEED = 5;
+    public static final int SEED = 1;
 
 
 

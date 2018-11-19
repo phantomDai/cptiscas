@@ -162,12 +162,13 @@ public class MR1 implements MetamorphicRelations {
 //        String[] names = {"FineGrainedHeap"};
 //        String[] names = {"SimpleLinear"};
 //        String[] names = {"SimpleTree"};
-//        String[] names = {"SkipQueue"};
-        String[] names = {"SequentialHeap"};
+        String[] names = {"SkipQueue"};
+//        String[] names = {"SequentialHeap"};
 
         for (int i = 0; i < names.length; i++) {
             mr.executeService(3,0,5,names[i]);
         }
+        System.exit(0);
     }
 
 }

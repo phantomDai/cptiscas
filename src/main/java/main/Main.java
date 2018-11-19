@@ -17,6 +17,9 @@ public class Main {
     private static final String[] MRNAMES = {"MR1","MR2","MR3","MR4","MR5","MR6","MR7","MR8","MR9",
             "MR10_1","MR10_2","MR10_3","MR11_1","MR11_2","MR11_3","MR12","MR13",
             "MR14","MR15","MR16_1","MR16_2","MR17","MR18_1","MR18_2","MR19_1","MR19_2"};
+//    private static final String[] MRNAMES = {"MR3","MR4","MR5","MR6","MR7","MR8","MR9",
+//            "MR10_1","MR10_2","MR10_3","MR11_1","MR11_2","MR11_3","MR12","MR13",
+//            "MR14","MR15","MR16_1","MR16_2","MR17","MR18_1"};
 
     /**
      * MR的包名
@@ -28,9 +31,9 @@ public class Main {
      */
 //    private static final String[] OBJECTNAMES = {"SimpleLinear","SimpleTree","SequentialHeap",
 //            "FineGrainedHeap","SkipQueue"};
-    private static final String[] OBJECTNAMES = {"SimpleLinear","SimpleTree"};
+//    private static final String[] OBJECTNAMES = {"SimpleTree"};
 //    private static final String[] OBJECTNAMES = {"FineGrainedHeap"};
-//    private static final String[] OBJECTNAMES = {"SkipQueue"};
+    private static final String[] OBJECTNAMES = {"SkipQueue"};
 //    private static final String[] OBJECTNAMES = {"SequentialHeap"};
 
 
