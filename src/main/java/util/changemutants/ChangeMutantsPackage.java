@@ -23,16 +23,10 @@ public class ChangeMutantsPackage {
      */
     public void changePackage(){
         for (int i = 0; i < OBJECTNAMES.length; i++) {
-            String dirpath = System.getProperty("user.dir") + separator + "src" + separator + "main" + separator + "java" + separator
-                    + "mutants" + separator + OBJECTNAMES[i] ;
+            String dirpath = System.getProperty("user.dir") + separator + "src" + separator + "main" + separator + "java" + separator +
+                    "mutants" + separator + OBJECTNAMES[i] ;
             File dirFile = new File(dirpath);
-            String[] mutantNames = null;
-            if (dirFile.isDirectory()){
-                mutantNames = dirFile.list();
-            }else {
-                System.out.println("错误");
-            }
-
+            String[] mutantNames = dirFile.list();
             for (int j = 0; j < mutantNames.length; j++) {
                 String packageInfo = "package mutants." + OBJECTNAMES[i] + "." + mutantNames[j] + ";";
                 String filePath = dirpath + separator + mutantNames[j] ;

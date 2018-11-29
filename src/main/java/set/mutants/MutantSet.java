@@ -107,4 +107,14 @@ public class MutantSet {
 
     public int size(){ return mutants.size(); }
 
+
+    public static void main(String[] args) {
+        MutantSet set = new MutantSet("SimpleLinear", "sequentialAndsequential");
+        System.out.println(set.size());
+        for (int i = 0; i < set.size(); i++) {
+            System.out.println(set.getMutantFullName(i) + "\n");
+        }
+
+    }
+
 }

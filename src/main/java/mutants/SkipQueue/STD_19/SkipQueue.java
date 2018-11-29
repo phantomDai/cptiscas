@@ -11,11 +11,13 @@ package mutants.SkipQueue.STD_19;
 
 
 
-import mutants.SkipQueue.skipQueue19.PrioritySkipList.Node;
+
+import mutants.SkipQueue.STD_19.PrioritySkipList.Node;
+
+
+
 
 /**
- *
- * @param T item type
  * @author __USER__
  */
 public class SkipQueue<T> {

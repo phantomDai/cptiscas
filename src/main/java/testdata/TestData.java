@@ -9,10 +9,12 @@ import java.util.Random;
  */
 public class TestData{
 
-    private static int MAXNUMBER = 10000 ;
+    private static int MAXNUMBER = 10 ;
+
+    private static int BUFF = 5;
 
     /**产生数据的默认个数*/
-    private int numberOfTestData = 10000 ;
+    private int numberOfTestData = 10 ;
 
     /**
      * 产生数据
@@ -29,7 +31,7 @@ public class TestData{
 
         //产生数据
         for (int i = 0; i < numberOfTestData; i++) {
-            data[i] = random.nextInt(MAXNUMBER -1000);
+            data[i] = random.nextInt(MAXNUMBER - BUFF);
         }
         return data;
     }
@@ -49,7 +51,7 @@ public class TestData{
 
         //产生数据
         for (int i = 0; i < numberOfTestData; i++) {
-            data[i] = random.nextInt(MAXNUMBER - 100) + 20;
+            data[i] = random.nextInt(MAXNUMBER - 1000) + 20;
         }
         return data;
     }
@@ -72,9 +74,9 @@ public class TestData{
         //产生数据
         for (int i = 0; i < numberOfTestData; i++) {
             //该数字保证产生的随机数最大值为4998
-            int tempMax = MAXNUMBER / 2 - 1;
+            int tempMax = MAXNUMBER - 10;
             //生成0-9996的偶数
-            data[i] = random.nextInt(tempMax) * 2;
+            data[i] = random.nextInt(tempMax) + 3;
         }
         return data;
     }

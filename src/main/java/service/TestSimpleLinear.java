@@ -288,7 +288,8 @@ public class TestSimpleLinear {
     public int[] getResults(){
         if (vector.size() < DEFAULTNUMBER){
             Random random = new Random();
-            for (int i = 0; i < (DEFAULTNUMBER - vector.size()); i++) {
+            int temp = vector.size();
+            for (int i = 0; i < (DEFAULTNUMBER - temp); i++) {
                 vector.add(random.nextInt(1000) + 1000);
             }
         }
@@ -310,7 +311,11 @@ public class TestSimpleLinear {
         try {
             clazz = Class.forName(myMutantFullName);
             constructor = clazz.getConstructor(int.class);
-            mutantInstance = constructor.newInstance(lengthOfList);
+            if (lengthOfList < 10000){
+                mutantInstance = constructor.newInstance(10000);
+            }else {
+                mutantInstance = constructor.newInstance(lengthOfList);
+            }
             method_add = clazz.getMethod(METHODNAME_ADD,Object.class,int.class);
             method_remove = clazz.getMethod(METHODNAME_REMOVE,null);
         } catch (ClassNotFoundException e) {

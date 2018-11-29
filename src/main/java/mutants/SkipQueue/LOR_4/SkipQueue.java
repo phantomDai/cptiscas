@@ -12,7 +12,7 @@ package mutants.SkipQueue.LOR_4;
 
 
 
-import mutants.SkipQueue.skipQueue4.PrioritySkipList.Node;
+import mutants.SkipQueue.LOR_4.PrioritySkipList.Node;
 
 /**
  *

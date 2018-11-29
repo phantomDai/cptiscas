@@ -4,10 +4,11 @@ package mr;
 import set.mutants.MutantSet;
 import testdata.TestData;
 import testprograms.TestProgram;
-import util.logs.*;
+import util.logs.LogRecorder;
+import util.logs.WrongReport;
 
 import java.util.*;
-
+import static mr.util.Constant.SEED;
 /**
  * mr4蜕变关系：在原始序列的后面串联一个原始序列的子集，子集元素的个数分别为原始子集的1/10，3/10，5/10，7/10，10/10
  * @author phantom
@@ -78,13 +79,14 @@ public class MR4 implements MetamorphicRelations {
         for (int j = 0; j < SEED; j++) {
             //记录杀死的变异体的ID
             List<String> killedMutants = new ArrayList<>();
-            //开始记录时间
-            long startTime = System.currentTimeMillis();
+            List<Long> times = new ArrayList<>();
 
             for (int i = 0; i < mutantSet.size(); i++) {
 //            for (int i = 0; i < 1; i++) {
                 System.out.println("开始测试" + objectName + "的" + mutantSet.getMutantID(i));
 
+                //开始记录时间
+                long startTime = System.currentTimeMillis();
                 //随机产生1W个数据
                 TestData testData = new TestData();
                 int[] randomArray = testData.generateTestData(j);
@@ -108,6 +110,9 @@ public class MR4 implements MetamorphicRelations {
                 //验证原始数据和衍生数据的执行结果是否符合蜕变关系
                 boolean flag = isConformToMR(sourceTopArray,followTopArray);
 
+                //执行测试用例需要的时间：包括：生成测试数据，执行测试，验证结果
+                long endtime = System.currentTimeMillis();
+                times.add(endtime - startTime);
                 //如果违反了蜕变关系，则添加到列表中，并记录执行结果
                 if (!flag){
                     killedMutants.add(mutantSet.getMutantID(i));
@@ -115,17 +120,18 @@ public class MR4 implements MetamorphicRelations {
                             mutantSet.getMutantID(i),sourceTopArray,followTopArray);
                 }
             }//i-遍历所有的变异体
-            long endtime = System.currentTimeMillis();
+            long time = 0;
+            for (int i = 0; i < times.size(); i++) {
+                time += times.get(i);
+            }
+            //清空记录时间的列表
+            times.clear();
             //将本次执行的结果记录到XLS文件中
             logRecorder.write(index,loop,j,numberOfThreads,objectName,"MR4",
-                    killedMutants,mutantSet.size(),endtime - startTime);
+                    killedMutants,mutantSet.size(),time);
         }//j-循环次数
     }
 
-    /**
-     * 默认的循环次数
-     */
-    private static final int SEED = 10;
 
 
     /**
@@ -139,4 +145,19 @@ public class MR4 implements MetamorphicRelations {
      */
     private static final String[] MUTANTSNAME = {"sequentialAndsequential", "sequentialAndconcurrent",
             "concurrentAndsequential", "concurrentAndconcurrent"} ;
+
+    public static void main(String[] args) {
+        MR4 mr = new MR4();
+        //        String[] names = {"SimpleLinear","SimpleTree","SequentialHeap","FineGrainedHeap","SkipQueue"};
+//        String[] names = {"FineGrainedHeap","SkipQueue"};
+//        String[] names = {"SimpleLinear"};
+        String[] names = {"SimpleTree"};
+//        String[] names = {"SkipQueue"};
+
+        for (int i = 0; i < names.length; i++) {
+            mr.executeService(3,0,5,names[i]);
+        }
+    }
+
+
 }

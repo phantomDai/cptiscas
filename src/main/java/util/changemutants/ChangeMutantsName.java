@@ -57,7 +57,7 @@ public class ChangeMutantsName {
                     String index = tempStrArray[0];
                     String operator = tempStrArray[1];
                     String newName = operator + "_" + index;
-                    changeName(OBJECTNAMES[i],index,newName);
+//                    changeName(OBJECTNAMES[i],index,newName);
                     changeMutantInfo(OBJECTNAMES[i],index,newName);
                 }
             } catch (FileNotFoundException e) {
@@ -66,6 +66,7 @@ public class ChangeMutantsName {
                 e.printStackTrace();
             }
         }
+
         ChangeMutantsPackage changeMutantsPackage = new ChangeMutantsPackage();
         changeMutantsPackage.changePackage();
     }

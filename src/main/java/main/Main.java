@@ -1,5 +1,6 @@
 package main;
 
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -16,6 +17,9 @@ public class Main {
     private static final String[] MRNAMES = {"MR1","MR2","MR3","MR4","MR5","MR6","MR7","MR8","MR9",
             "MR10_1","MR10_2","MR10_3","MR11_1","MR11_2","MR11_3","MR12","MR13",
             "MR14","MR15","MR16_1","MR16_2","MR17","MR18_1","MR18_2","MR19_1","MR19_2"};
+//    private static final String[] MRNAMES = {"MR3","MR4","MR5","MR6","MR7","MR8","MR9",
+//            "MR10_1","MR10_2","MR10_3","MR11_1","MR11_2","MR11_3","MR12","MR13",
+//            "MR14","MR15","MR16_1","MR16_2","MR17","MR18_1"};
 
     /**
      * MR的包名
@@ -25,7 +29,12 @@ public class Main {
     /**
      * 测试对象的名字
      */
-    private static final String[] OBJECTNAMES = {"SimpleLinear","SimpleTree","SequentialHeap","FineGrainedHeap","SkipQueue"};
+//    private static final String[] OBJECTNAMES = {"SimpleLinear","SimpleTree","SequentialHeap",
+//            "FineGrainedHeap","SkipQueue"};
+//    private static final String[] OBJECTNAMES = {"SimpleTree"};
+//    private static final String[] OBJECTNAMES = {"FineGrainedHeap"};
+    private static final String[] OBJECTNAMES = {"SkipQueue"};
+//    private static final String[] OBJECTNAMES = {"SequentialHeap"};
 
 
     /**
@@ -42,7 +51,7 @@ public class Main {
     /**
      * 循环控制
      */
-    private static final int LOOP = 10;
+    private static final int LOOP = 5;
 
     /**MR的类对象*/
     private Class MRClass;
@@ -69,40 +78,25 @@ public class Main {
     public void startExecuteTesting(){
         for (int i = 0; i < OBJECTNAMES.length; i++) {
             //如果待测程序是“sequentialHeap”的话是需要测试1种场景
-            if (OBJECTNAMES[i].equals("SequentialHeap")){
-                for (int j = 0; j < MRNAMES.length; j++) {
-                    String MRName = MRPACKAGE + MRNAMES[j] ;
-                    //初始化MR的对象
-                    initializeObject(MRName);
-                    for (int k = 0; k < LOOP; k++) {
-                        try {
-                            MRmethod_executeService.invoke(instance,0,k,10,OBJECTNAMES[i]);
-                        } catch (IllegalAccessException e) {
-                            e.printStackTrace();
-                        } catch (InvocationTargetException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }else {
-                for (int j = 0; j < MRNAMES.length; j++) {
-                    String MRName = MRPACKAGE + MRNAMES[j];
-                    initializeObject(MRName);
-                    for (int k = 0; k < LOOP; k++) {
-                        for (int l = 0; l < INDEXS.length; l++) {
-                            for (int m = 0; m < NUMBEROFTHREADS.length; m++) {
-                                try {
-                                    MRmethod_executeService.invoke(instance,INDEXS[l],k,NUMBEROFTHREADS[m],OBJECTNAMES[i]);
-                                } catch (IllegalAccessException e) {
-                                    e.printStackTrace();
-                                } catch (InvocationTargetException e) {
-                                    e.printStackTrace();
-                                }
+
+            for (int j = 0; j < MRNAMES.length; j++) {
+                String MRName = MRPACKAGE + MRNAMES[j];
+                initializeObject(MRName);
+                for (int k = 0; k < LOOP; k++) {
+                    for (int l = 0; l < INDEXS.length; l++) {
+                        for (int m = 0; m < NUMBEROFTHREADS.length; m++) {
+                            try {
+                                MRmethod_executeService.invoke(instance,INDEXS[l],k,NUMBEROFTHREADS[m],OBJECTNAMES[i]);
+                            } catch (IllegalAccessException e) {
+                                e.printStackTrace();
+                            } catch (InvocationTargetException e) {
+                                e.printStackTrace();
                             }
                         }
                     }
                 }
             }
+
         }
     }
 
@@ -130,5 +124,6 @@ public class Main {
     public static void main(String[] args) {
         Main main = new Main();
         main.startExecuteTesting();
+        System.exit(0);
     }
 }

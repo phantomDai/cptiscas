@@ -3,14 +3,15 @@ package mr;
 import set.mutants.MutantSet;
 import testdata.TestData;
 import testprograms.TestProgram;
-import util.logs.*;
+import util.logs.LogRecorder;
+import util.logs.WrongReport;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
-
+import static mr.util.Constant.SEED;
 /**
  *
  * @author phantom
@@ -33,31 +34,59 @@ public class MR12 implements MetamorphicRelations{
         this.sourcetoplist = sourcetoplist;
         Random random = new Random();
         //随机一个x序列的长度在10-10000之间
-        int sublength = random.nextInt(mylist.length - 9) + 10;
-        int[] x = new int[sublength];
+        int k = random.nextInt(mylist.length) / 2 ;
+        int[] x = new int[k];
         for (int i = 0; i < x.length; i++) {
             x[i] = random.nextInt(NUMBERRANGE);
+//            x[i] = random.nextInt(20);
         }
+//
+//        for (int i = 0; i < x.length; i++) {
+//            System.out.print(x[i] + ", ");
+//        }
+//        System.out.println();
+
+
+
         this.tempx = x ;
-        List<Integer> tempsourcelist = new ArrayList<Integer>();
+        List<Integer> vlist = new ArrayList<Integer>();
         for (int i = 0; i < mylist.length; i++) {
-            tempsourcelist.add(mylist[i]);
+            vlist.add(mylist[i]);
         }
         //将数组转化为list
         List<Integer> tempxlist = Arrays.stream(x).boxed().collect(Collectors.toList());
         for (int i = 0; i < tempxlist.size(); i++) {
-            int temp = tempxlist.get(i);
-            for (int j = 0; j < tempsourcelist.size(); j++) {
-                if (tempsourcelist.get(j) == temp){
-                    tempsourcelist.remove(j);
-                    break;
-                }
+            if (vlist.contains(tempxlist.get(i))){
+                vlist.remove(tempxlist.get(i));
             }
         }
-        int[] returnlist = new int[tempsourcelist.size()];
-        for (int i = 0; i < tempsourcelist.size(); i++) {
-            returnlist[i] = tempsourcelist.get(i);
+
+        int[] returnlist = new int[vlist.size()];
+        for (int i = 0; i < vlist.size(); i++) {
+            returnlist[i] = vlist.get(i);
         }
+
+        //得到tempx
+        //首先将sourceTopArray转化为List
+        List<Integer> sourceArray = new ArrayList<>();
+        List<Integer> xlist = new ArrayList<>();
+        for (int i = 0; i < sourcetoplist.length; i++) {
+            sourceArray.add(sourcetoplist[i]);
+        }
+
+        for (int i = 0; i < sourceArray.size(); i++) {
+            if (tempxlist.contains(sourceArray.get(i))){
+                xlist.add(sourceArray.get(i));
+            }
+        }
+
+        if (xlist.size() != 0){
+            tempx = new int[xlist.size()];
+            for (int i = 0; i < xlist.size(); i++) {
+                tempx[i] = xlist.get(i);
+            }
+        }
+
         return returnlist;
     }
 
@@ -135,13 +164,14 @@ public class MR12 implements MetamorphicRelations{
         for (int j = 0; j < SEED; j++) {
             //记录杀死的变异体的ID
             List<String> killedMutants = new ArrayList<>();
-            //开始记录时间
-            long startTime = System.currentTimeMillis();
+            List<Long> times = new ArrayList<>();
 
             for (int i = 0; i < mutantSet.size(); i++) {
 //            for (int i = 0; i < 1; i++) {
                 System.out.println("开始测试" + objectName + "的" + mutantSet.getMutantID(i));
 
+                //开始记录时间
+                long startTime = System.currentTimeMillis();
                 //随机产生1W个数据
                 TestData testData = new TestData();
                 int[] randomArray = testData.generateTestData(j);
@@ -165,6 +195,9 @@ public class MR12 implements MetamorphicRelations{
                 //验证原始数据和衍生数据的执行结果是否符合蜕变关系
                 boolean flag = isConformToMR(sourceTopArray,followTopArray);
 
+                //执行测试用例需要的时间：包括：生成测试数据，执行测试，验证结果
+                long endtime = System.currentTimeMillis();
+                times.add(endtime - startTime);
                 //如果违反了蜕变关系，则添加到列表中，并记录执行结果
                 if (!flag){
                     killedMutants.add(mutantSet.getMutantID(i));
@@ -172,17 +205,19 @@ public class MR12 implements MetamorphicRelations{
                             mutantSet.getMutantID(i),sourceTopArray,followTopArray);
                 }
             }//i-遍历所有的变异体
-            long endtime = System.currentTimeMillis();
+            long time = 0;
+            for (int i = 0; i < times.size(); i++) {
+                time += times.get(i);
+            }
+            //清空记录时间的列表
+            times.clear();
             //将本次执行的结果记录到XLS文件中
             logRecorder.write(index,loop,j,numberOfThreads,objectName,"MR12",
-                    killedMutants,mutantSet.size(),endtime - startTime);
+                    killedMutants,mutantSet.size(),time);
         }//j-循环次数
     }
 
-    /**
-     * 默认的循环次数
-     */
-    private static final int SEED = 10;
+
 
 
     /**
@@ -196,6 +231,35 @@ public class MR12 implements MetamorphicRelations{
      */
     private static final String[] MUTANTSNAME = {"sequentialAndsequential", "sequentialAndconcurrent",
             "concurrentAndsequential", "concurrentAndconcurrent"} ;
+
+
+    public static void main(String[] args) {
+        MR12 mr = new MR12();
+//        int[] data = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20};
+//        int[] sourcetop = {1,2,3,4,5,6,7,8,9,10};
+//
+//        int[] follow = mr.followUpList(data,sourcetop);
+//        for (int i = 0; i < follow.length; i++) {
+//            System.out.print(follow[i] + ", ");
+//        }
+//        System.out.println();
+//        for (int i = 0; i < mr.tempx.length; i++) {
+//            System.out.print(mr.tempx[i] + ",");
+//        }
+
+
+
+        //        String[] names = {"SimpleLinear","SimpleTree","SequentialHeap","FineGrainedHeap","SkipQueue"};
+//        String[] names = {"FineGrainedHeap","SkipQueue"};
+//        String[] names = {"SimpleLinear"};
+        String[] names = {"SimpleTree"};
+//        String[] names = {"SkipQueue"};
+
+        for (int i = 0; i < names.length; i++) {
+            mr.executeService(3,0,5,names[i]);
+        }
+
+    }
 
 
 }

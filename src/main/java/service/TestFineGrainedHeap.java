@@ -121,7 +121,12 @@ public class TestFineGrainedHeap {
             //执行线程中的任务
             for (int i = 0; i < numberOfThreads; i++) {
                 try {
-                    removeMinThreads[i].join();
+                    removeMinThreads[i].join(100);
+                    if (removeMinThreads[i].isAlive()){
+                        for (int k = 0; k < numberOfThreads; k++) {
+                            removeMinThreads[k].cancel();
+                        }
+                    }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -168,7 +173,12 @@ public class TestFineGrainedHeap {
         //执行线程中的任务
         for (int i = 0; i < numberOfThreads; i++) {
             try {
-                addThreads[i].join();
+                addThreads[i].join(100);
+                if (addThreads[i].isAlive()){
+                    for (int k = 0; k < numberOfThreads; k++) {
+                        addThreads[k].cancel();
+                    }
+                }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -217,11 +227,17 @@ public class TestFineGrainedHeap {
         //启动线程
         for (int i = 0; i < numberOfThreads; i++) {
             addThreads[i].start();
+
         }
         //执行线程中的任务
         for (int i = 0; i < numberOfThreads; i++) {
             try {
-                addThreads[i].join();
+                addThreads[i].join(100);
+                if (addThreads[i].isAlive()){
+                    for (int k = 0; k < numberOfThreads; k++) {
+                        addThreads[k].cancel();
+                    }
+                }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -244,7 +260,12 @@ public class TestFineGrainedHeap {
             //执行线程中的任务
             for (int i = 0; i < numberOfThreads; i++) {
                 try {
-                    removeMinThreads[i].join();
+                    removeMinThreads[i].join(100);
+                    if (removeMinThreads[i].isAlive()){
+                        for (int k = 0; k < numberOfThreads; k++) {
+                            removeMinThreads[k].cancel();
+                        }
+                    }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -261,7 +282,12 @@ public class TestFineGrainedHeap {
         try {
             clazz = Class.forName(myMutantFullName);
             constructor = clazz.getConstructor(int.class);
-            mutantInstance = constructor.newInstance(lengthOfList);
+            if (lengthOfList < 10000){
+                mutantInstance = constructor.newInstance(10000 + 500);
+            }else {
+                mutantInstance = constructor.newInstance(lengthOfList + 500);
+            }
+
             method_add = clazz.getMethod(METHODNAME_ADD,Object.class,int.class);
             method_remove = clazz.getMethod(METHODNAME_REMOVE,null);
         } catch (ClassNotFoundException e) {
@@ -283,6 +309,13 @@ public class TestFineGrainedHeap {
      * @return 返回优先级最高的数据
      */
     public int[] getResults(){
+        if (vector.size() < DEFAULTNUMBER){
+            Random random = new Random();
+            int temp = vector.size();
+            for (int i = 0; i < (DEFAULTNUMBER - temp); i++) {
+                vector.add(random.nextInt(1000) + 1000);
+            }
+        }
         int[] tempList = new int[vector.size()];
         for (int i = 0; i < vector.size(); i++) {
             tempList[i] = vector.get(i);
@@ -410,7 +443,7 @@ public class TestFineGrainedHeap {
             while(!flag){
                 for (int i = 0; i < mylist.size(); i++) {
                     try {
-                        method_add.invoke(mutantInstance,mylist.get(i));
+                        method_add.invoke(mutantInstance,mylist.get(i),mylist.get(i));
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
                     } catch (InvocationTargetException e) {

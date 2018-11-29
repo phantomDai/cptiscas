@@ -11,7 +11,7 @@ package mutants.SkipQueue.AOR_126;
 
 
 
-import mutants.SkipQueue.skipQueue126.PrioritySkipList.Node;
+import mutants.SkipQueue.AOR_126.PrioritySkipList.Node;
 
 /**
  *
