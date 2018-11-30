@@ -10,10 +10,13 @@
 package mutants.SequentialHeap.STD_158;
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Sequential heap.
- * @param T type manged by heap
  * @author mph
  */
 public class SequentialHeap<T> implements PQueue<T> {
@@ -40,6 +43,7 @@ public class SequentialHeap<T> implements PQueue<T> {
    */
   public synchronized void add(T item, int priority) {
     int child = next++;
+//    System.out.println("我是：" + Thread.currentThread().getName() + ",开始测试了,next的值是：" + next);
     heap[child].init(item, priority);
     while (child > ROOT) {
       int parent = child / 2;
@@ -48,9 +52,11 @@ public class SequentialHeap<T> implements PQueue<T> {
         swap(child, parent);
         child = parent;
       } else {
+//        System.out.println("我是：" + Thread.currentThread().getName() + ",结束测试了");
         return;
       }
     }
+//    System.out.println("我是：" + Thread.currentThread().getName() + ",结束测试了");
   }
   
   /**
@@ -93,7 +99,7 @@ public class SequentialHeap<T> implements PQueue<T> {
     return item;
   }
   private synchronized void swap(int i, int j) {
-    HeapNode<T> node = heap[i];
+    HeapNode node = heap[i];
     heap[i] = heap[j];
     heap[j] = node;
   }
@@ -129,4 +135,62 @@ public class SequentialHeap<T> implements PQueue<T> {
       
     }
   }
+//  /**
+//   * 向列表中存数据的线程
+//   */
+//  class AddThread extends  Thread{
+//    int base = 1000;
+//    AddThread(int base){
+//      this.base = base;
+//    }
+//    @Override
+//    public void run(){
+//      while(!flag){
+//        for (int i = 0; i < base; i++) {
+//          try {
+//            Thread.sleep(10);
+//          } catch (InterruptedException e) {
+//            e.printStackTrace();
+//          }
+//          add(i,i);
+//        }
+//      }
+//    }
+//
+//    volatile boolean flag = false;
+//    public void cancel(){
+//      this.flag = true;
+//    }
+//
+//  }
+
+
+
+
+//  public void test(){
+//    AddThread[] addThreads =  new AddThread[10];
+//    List<Integer> list = new ArrayList<>();
+//    for (int i = 0; i < 1000; i++) {
+//      list.add(i + 1);
+//    }
+//    for (int i = 0; i < 10; i++) {
+//      addThreads[i] = new AddThread(1000);
+//    }
+//    for (int i = 0; i < 10; i++) {
+//      addThreads[i].start();
+//    }
+//
+//    for (int i = 0; i < 10; i++) {
+//      try {
+//        addThreads[i].join();
+//      } catch (InterruptedException e) {
+//        e.printStackTrace();
+//      }
+//    }
+//
+//  }
+
+
+
+
 }

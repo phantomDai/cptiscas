@@ -272,6 +272,7 @@ public class TestSequentialHeap {
                     removeMinThreads[i].join(100);
                     if (removeMinThreads[i].isAlive()){
                         for (int k = 0; k < numberOfThreads; k++) {
+
                             removeMinThreads[k].cancel();
                         }
                     }
@@ -456,10 +457,12 @@ public class TestSequentialHeap {
             while(!flag){
                 for (int i = 0; i < mylist.size(); i++) {
                     try {
-                        if (i > 10000){
-                            System.out.println("i 的值过大，" + i);
-                        }
+//                        System.out.println(Thread.currentThread().getName() + "i的值为：" + i);
+//                        Thread.sleep(10);
                         method_add.invoke(mutantInstance,mylist.get(i),mylist.get(i));
+                        if (i == (mylist.size() - 1)){
+                            cancel();
+                        }
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
                     } catch (InvocationTargetException e) {

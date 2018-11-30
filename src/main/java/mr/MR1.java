@@ -106,6 +106,12 @@ public class MR1 implements MetamorphicRelations {
                 int[] sourceTopArray = testProgramForSource.executeServiceAndGetResult(index,numberOfThreads,serviceName,
                         mutantSet.getMutantFullName(i),sourceArray);
 
+                for (int k = 0; k < sourceTopArray.length; k++) {
+                    System.out.print(sourceTopArray[k] + ",");
+                }
+
+                System.out.println();
+
                 //获取衍生测试数据
                 int[] followUpArray = followUpList(sourceArray,sourceTopArray);
 
@@ -113,6 +119,10 @@ public class MR1 implements MetamorphicRelations {
                 TestProgram testProgramForFollowUp = new TestProgram();
                 int[] followTopArray = testProgramForFollowUp.executeServiceAndGetResult(index,numberOfThreads,serviceName,
                         mutantSet.getMutantFullName(i),followUpArray);
+
+                for (int k = 0; k < followTopArray.length; k++) {
+                    System.out.print(followTopArray[k] + ",");
+                }
 
                 //验证原始数据和衍生数据的执行结果是否符合蜕变关系
                 boolean flag = isConformToMR(sourceTopArray,followTopArray);
@@ -159,10 +169,10 @@ public class MR1 implements MetamorphicRelations {
     public static void main(String[] args) {
         MR1 mr = new MR1();
 //        String[] names = {"SimpleLinear","SimpleTree","SequentialHeap","FineGrainedHeap","SkipQueue"};
-//        String[] names = {"FineGrainedHeap"};
+        String[] names = {"FineGrainedHeap"};
 //        String[] names = {"SimpleLinear"};
 //        String[] names = {"SimpleTree"};
-        String[] names = {"SkipQueue"};
+//        String[] names = {"SkipQueue"};
 //        String[] names = {"SequentialHeap"};
 
         for (int i = 0; i < names.length; i++) {
