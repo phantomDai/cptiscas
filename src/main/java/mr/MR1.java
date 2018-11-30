@@ -87,8 +87,8 @@ public class MR1 implements MetamorphicRelations {
 
             List<Long> times = new ArrayList<>();
 
-//            for (int i = 0; i < mutantSet.size(); i++) {
-            for (int i = 0; i < 1; i++) {
+            for (int i = 0; i < mutantSet.size(); i++) {
+//            for (int i = 0; i < 1; i++) {
                 System.out.println("开始测试" + objectName + "的" + mutantSet.getMutantID(i));
 
                 //开始记录时间
@@ -113,6 +113,7 @@ public class MR1 implements MetamorphicRelations {
                 TestProgram testProgramForFollowUp = new TestProgram();
                 int[] followTopArray = testProgramForFollowUp.executeServiceAndGetResult(index,numberOfThreads,serviceName,
                         mutantSet.getMutantFullName(i),followUpArray);
+
 
                 //验证原始数据和衍生数据的执行结果是否符合蜕变关系
                 boolean flag = isConformToMR(sourceTopArray,followTopArray);
@@ -159,11 +160,11 @@ public class MR1 implements MetamorphicRelations {
     public static void main(String[] args) {
         MR1 mr = new MR1();
 //        String[] names = {"SimpleLinear","SimpleTree","SequentialHeap","FineGrainedHeap","SkipQueue"};
-//        String[] names = {"FineGrainedHeap"};
+        String[] names = {"FineGrainedHeap"};
 //        String[] names = {"SimpleLinear"};
 //        String[] names = {"SimpleTree"};
 //        String[] names = {"SkipQueue"};
-        String[] names = {"SequentialHeap"};
+//        String[] names = {"SequentialHeap"};
 
         for (int i = 0; i < names.length; i++) {
             mr.executeService(3,0,5,names[i]);

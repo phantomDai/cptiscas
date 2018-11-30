@@ -21,12 +21,7 @@ public class TestSequentialHeap {
     private static final int DEFAULTTHREAD = 10;
 
     /**列表中数的总个数*/
-    private static final int RANGE = 10;
-
-    /**
-     * 为变异体设置的缓冲
-     */
-    private static final int BUFF = 0;
+    private static final int RANGE = 10000;
 
     /**变异体的实例*/
     Object mutantInstance;
@@ -48,8 +43,6 @@ public class TestSequentialHeap {
 
     /**待测对象中取数据的方法*/
     Method method_remove;
-
-    Method method_sanityCheck;
 
 
     /**存放取出元素的向量*/
@@ -182,7 +175,6 @@ public class TestSequentialHeap {
         addThreads = new AddThread[numberOfThreads];
         for (int i = 0; i < numberOfThreads; i++) {
             addThreads[i] = new AddThread(lists[i].list);
-//            addThreads[i] = new AddThread(i);
         }
         //启动线程
         for (int i = 0; i < numberOfThreads; i++) {
@@ -241,7 +233,6 @@ public class TestSequentialHeap {
         addThreads = new AddThread[numberOfThreads];
         for (int i = 0; i < numberOfThreads; i++) {
             addThreads[i] = new AddThread(lists[i].list);
-//            addThreads[i] = new AddThread(i);
         }
         //启动线程
         for (int i = 0; i < numberOfThreads; i++) {
@@ -250,22 +241,15 @@ public class TestSequentialHeap {
         //执行线程中的任务
         for (int i = 0; i < numberOfThreads; i++) {
             try {
-                addThreads[i].join();
-//                if (addThreads[i].isAlive()){
-//                    for (int j = 0; j < numberOfThreads; j++) {
-//                        addThreads[j].cancel();
-//                    }
-//                }
+                addThreads[i].join(100);
+                if (addThreads[i].isAlive()){
+                    for (int j = 0; j < numberOfThreads; j++) {
+                        addThreads[j].cancel();
+                    }
+                }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }
-        try {
-            method_sanityCheck.invoke(mutantInstance,null);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
         }
 
         /*********************  并发地取数据  ******************************/
@@ -288,6 +272,7 @@ public class TestSequentialHeap {
                     removeMinThreads[i].join(100);
                     if (removeMinThreads[i].isAlive()){
                         for (int k = 0; k < numberOfThreads; k++) {
+
                             removeMinThreads[k].cancel();
                         }
                     }
@@ -370,15 +355,14 @@ public class TestSequentialHeap {
         try {
             clazz = Class.forName(myMutantFullName);
             constructor = clazz.getConstructor(int.class);
-            if (lengthOfList < RANGE){
-                mutantInstance = constructor.newInstance( RANGE + BUFF);
+            if (lengthOfList < 10000){
+                mutantInstance = constructor.newInstance(10000 + 500);
             }else {
-                mutantInstance = constructor.newInstance(lengthOfList + BUFF);
+                mutantInstance = constructor.newInstance(lengthOfList + 500);
             }
 
             method_add = clazz.getMethod(METHODNAME_ADD,Object.class,int.class);
             method_remove = clazz.getMethod(METHODNAME_REMOVE,null);
-            method_sanityCheck = clazz.getMethod("sanityCheck", null);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (NoSuchMethodException e) {
@@ -465,28 +449,27 @@ public class TestSequentialHeap {
      */
     class AddThread extends  Thread{
         List<Integer> mylist;
-
         AddThread(List<Integer> list){
             this.mylist = list;
         }
-
         @Override
         public void run(){
-            System.out.println("我是" + Thread.currentThread().getName() + "，开始执行任务");
-//            while(!flag){
+            while(!flag){
                 for (int i = 0; i < mylist.size(); i++) {
                     try {
-                        if (i == mylist.size()){
-                            System.out.println("i 的值过大，" + i);
-                        }
+//                        System.out.println(Thread.currentThread().getName() + "i的值为：" + i);
+//                        Thread.sleep(10);
                         method_add.invoke(mutantInstance,mylist.get(i),mylist.get(i));
+                        if (i == (mylist.size() - 1)){
+                            cancel();
+                        }
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
                     } catch (InvocationTargetException e) {
                         e.printStackTrace();
                     }
                 }
-//            }
+            }
         }
 
         volatile boolean flag = false;

@@ -50,6 +50,7 @@ public class FineGrainedHeap<T> implements PQueue<T> {
   public void add(T item, int priority) {
     heapLock.lock();
     int child = next++;
+//    System.out.println("我是：" + Thread.currentThread().getName() + ",开始测试了,next的值是：" + next);
     heap[child].lock();
     heapLock.unlock();
     heap[child].init(item, priority);
@@ -85,6 +86,7 @@ public class FineGrainedHeap<T> implements PQueue<T> {
       }
       heap[ROOT].unlock();
     }
+//    System.out.println("我是：" + Thread.currentThread().getName() + ",结束测试了");
   }
 
   /**

@@ -441,6 +441,9 @@ public class TestSkipQueue {
                 for (int i = 0; i < mylist.size(); i++) {
                     try {
                         method_add.invoke(mutantInstance,mylist.get(i),mylist.get(i));
+                        if (i == (mylist.size() - 1)){
+                            cancel();
+                        }
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
                     } catch (InvocationTargetException e) {
