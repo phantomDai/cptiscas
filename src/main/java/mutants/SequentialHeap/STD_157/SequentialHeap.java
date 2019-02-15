@@ -10,17 +10,15 @@
 package mutants.SequentialHeap.STD_157;
 
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Sequential heap.
+ * @param T type manged by heap
  * @author mph
  */
 public class SequentialHeap<T> implements PQueue<T> {
   private static final int ROOT = 1;
-  volatile int next;
+  int next;
   HeapNode<T>[] heap;
   
   /**
@@ -42,7 +40,6 @@ public class SequentialHeap<T> implements PQueue<T> {
    */
   public synchronized void add(T item, int priority) {
     int child = next++;
-    System.out.println("我的名字是：" + Thread.currentThread().getName() + "我开始了；next的值为:" + next);
     heap[child].init(item, priority);
     while (child > ROOT) {
       int parent = child / 2;
@@ -54,7 +51,6 @@ public class SequentialHeap<T> implements PQueue<T> {
         return;
       }
     }
-    System.out.println("我是" + Thread.currentThread().getName() + ",我结束了，next的值是：" + next);
   }
   
   /**
@@ -133,10 +129,4 @@ public class SequentialHeap<T> implements PQueue<T> {
       priority = myPriority;
     }
   }
-
-
-
-
-
-
 }

@@ -9,12 +9,10 @@ import java.util.Random;
  */
 public class TestData{
 
-    private static int MAXNUMBER = 10 ;
-
-    private static int BUFF = 5;
+    private static int MAXNUMBER = 10000 ;
 
     /**产生数据的默认个数*/
-    private int numberOfTestData = 10 ;
+    private int numberOfTestData = 10000 ;
 
     /**
      * 产生数据
@@ -31,7 +29,7 @@ public class TestData{
 
         //产生数据
         for (int i = 0; i < numberOfTestData; i++) {
-            data[i] = random.nextInt(MAXNUMBER - BUFF);
+            data[i] = random.nextInt(MAXNUMBER -1000);
         }
         return data;
     }

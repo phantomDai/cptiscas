@@ -83,7 +83,7 @@ public class MR9 implements MetamorphicRelations {
 
             for (int i = 0; i < mutantSet.size(); i++) {
 //            for (int i = 9; i < 10; i++) {
-                System.out.println("开始测试" + objectName + "的" + mutantSet.getMutantID(i));
+                System.out.println("MR9: 开始测试" + objectName + "的" + mutantSet.getMutantID(i) + "; loop:" + loop + " numberOfThreads:" + numberOfThreads);
 
                 //开始记录时间
                 long startTime = System.currentTimeMillis();

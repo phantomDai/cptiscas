@@ -17,9 +17,7 @@ public class Main {
     private static final String[] MRNAMES = {"MR1","MR2","MR3","MR4","MR5","MR6","MR7","MR8","MR9",
             "MR10_1","MR10_2","MR10_3","MR11_1","MR11_2","MR11_3","MR12","MR13",
             "MR14","MR15","MR16_1","MR16_2","MR17","MR18_1","MR18_2","MR19_1","MR19_2"};
-//    private static final String[] MRNAMES = {"MR3","MR4","MR5","MR6","MR7","MR8","MR9",
-//            "MR10_1","MR10_2","MR10_3","MR11_1","MR11_2","MR11_3","MR12","MR13",
-//            "MR14","MR15","MR16_1","MR16_2","MR17","MR18_1"};
+//    private static final String[] MRNAMES = {"MR1"};
 
     /**
      * MR的包名
@@ -33,20 +31,21 @@ public class Main {
 //            "FineGrainedHeap","SkipQueue"};
 //    private static final String[] OBJECTNAMES = {"SimpleTree"};
 //    private static final String[] OBJECTNAMES = {"FineGrainedHeap"};
-//    private static final String[] OBJECTNAMES = {"SkipQueue"};
+    private static final String[] OBJECTNAMES = {"SkipQueue"};
 //    private static final String[] OBJECTNAMES = {"SequentialHeap"};
-    private static final String[] OBJECTNAMES = {"SimpleLinear"};
-
+//    private static final String[] OBJECTNAMES = {"SimpleLinear"};
 
     /**
      * 测试场景的编码
      */
     private static final int[] INDEXS = {0, 1, 2, 3};
+//    private static final int[] INDEXS = {3};
 
     /**
      *并发测试开启的线程数目
      */
     private static final int[] NUMBEROFTHREADS = {2, 5, 10};
+//    private static final int[] NUMBEROFTHREADS = {10};
 
 
     /**

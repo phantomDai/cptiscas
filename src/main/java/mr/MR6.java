@@ -95,7 +95,7 @@ public class MR6 implements MetamorphicRelations {
             List<Long> times = new ArrayList<>();
             for (int i = 0; i < mutantSet.size(); i++) {
 //            for (int i = 0; i < 1; i++) {
-                System.out.println("开始测试" + objectName + "的" + mutantSet.getMutantID(i));
+                System.out.println("MR6: 开始测试" + objectName + "的" + mutantSet.getMutantID(i)  + "; loop:" + loop + " numberOfThreads:" + numberOfThreads);
 
                 //开始记录时间
                 long startTime = System.currentTimeMillis();
