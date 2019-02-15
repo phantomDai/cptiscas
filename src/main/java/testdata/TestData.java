@@ -72,9 +72,9 @@ public class TestData{
         //产生数据
         for (int i = 0; i < numberOfTestData; i++) {
             //该数字保证产生的随机数最大值为4998
-            int tempMax = MAXNUMBER - 10;
+            int tempMax = (MAXNUMBER - 10) / 2;
             //生成0-9996的偶数
-            data[i] = random.nextInt(tempMax) + 3;
+            data[i] = random.nextInt(tempMax) * 2;
         }
         return data;
     }
