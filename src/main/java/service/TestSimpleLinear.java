@@ -85,6 +85,8 @@ public class TestSimpleLinear {
                     e.printStackTrace();
                 } catch (InvocationTargetException e) {
                     e.printStackTrace();
+                }catch (ArrayIndexOutOfBoundsException e){
+                    break;
                 }
             }
 

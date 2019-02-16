@@ -26,7 +26,7 @@ public class MR7 implements MetamorphicRelations {
 
 
     public int[] followUpList(int[] sourceArray, int[] sourceTopArray) {
-        int[] followArray = new int[sourceArray.length + 1] ;
+        int[] followArray = new int[sourceArray.length] ;
         Random random = new Random();
 
         //产生1-8之间的数值
@@ -36,8 +36,8 @@ public class MR7 implements MetamorphicRelations {
         this.target = sourceTopArray[target_index + 1] - 1;
 
         //将原始测试数据复制给衍生测试数据并添加上y
-        System.arraycopy(sourceArray,0,followArray,0,sourceArray.length);
-        followArray[sourceArray.length] = target;
+        System.arraycopy(sourceArray,0,followArray,0,sourceArray.length - 1);
+        followArray[sourceArray.length - 1] = target;
         return followArray;
     }
 
@@ -182,12 +182,20 @@ public class MR7 implements MetamorphicRelations {
     public static void main(String[] args) {
         MR7 mr = new MR7();
         //        String[] names = {"SimpleLinear","SimpleTree","SequentialHeap","FineGrainedHeap","SkipQueue"};
-//        String[] names = {"FineGrainedHeap","SkipQueue"};
+        String[] names = {"SimpleLinear","SimpleTree","SequentialHeap"};
+        int[] numberofthreads = {2, 5, 10};
 //        String[] names = {"SimpleLinear"};
 //        String[] names = {"SimpleTree"};
 //        String[] names = {"SkipQueue"};
-        for (int i = 0; i < 5; i++) {
-            mr.executeService(0,i,2,"SimpleLinear");
+//        mr.executeService(3,0,5,"SimpleLinear");
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < names.length; j++) {
+                for (int k = 0; k < numberofthreads.length; k++) {
+                    for (int l = 0; l < 5; l++) {
+                        mr.executeService(i,l,numberofthreads[k],names[j]);
+                    }
+                }
+            }
         }
     }
 }
