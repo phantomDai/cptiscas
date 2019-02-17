@@ -1,12 +1,12 @@
 package service;
 
 import bin.BinList;
+import service.utl.ThreadIDPool;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * 测试FineGrainedHeap的主要类
@@ -55,6 +55,11 @@ public class TestFineGrainedHeap {
 
     /**产生数据的对象*/
     Random random = new Random();
+
+    /**record the created ids of threads*/
+    ThreadIDPool threadIDPool = new ThreadIDPool();
+
+
 
     /**
      * 添加数据的方式：顺序
@@ -113,6 +118,7 @@ public class TestFineGrainedHeap {
             removeMinThreads = new RemoveMinThread[numberOfThreads];
             for (int i = 0; i < numberOfThreads; i++) {
                 removeMinThreads[i] = new RemoveMinThread();
+                threadIDPool.addID(removeMinThreads[i].getName());
             }
             //开启线程
             for (int i = 0; i < numberOfThreads; i++) {
@@ -121,10 +127,11 @@ public class TestFineGrainedHeap {
             //执行线程中的任务
             for (int i = 0; i < numberOfThreads; i++) {
                 try {
-                    removeMinThreads[i].join(100);
+                    removeMinThreads[i].join(300);
                     if (removeMinThreads[i].isAlive()){
                         for (int k = 0; k < numberOfThreads; k++) {
                             removeMinThreads[k].cancel();
+                            removeMinThreads[k].interrupt();
                         }
                     }
                 } catch (InterruptedException e) {
@@ -165,6 +172,7 @@ public class TestFineGrainedHeap {
         addThreads = new AddThread[numberOfThreads];
         for (int i = 0; i < numberOfThreads; i++) {
             addThreads[i] = new AddThread(lists[i].list);
+            threadIDPool.addID(addThreads[i].getName());
         }
         //启动线程
         for (int i = 0; i < numberOfThreads; i++) {
@@ -173,10 +181,11 @@ public class TestFineGrainedHeap {
         //执行线程中的任务
         for (int i = 0; i < numberOfThreads; i++) {
             try {
-                addThreads[i].join(100);
+                addThreads[i].join(300);
                 if (addThreads[i].isAlive()){
                     for (int k = 0; k < numberOfThreads; k++) {
                         addThreads[k].cancel();
+                        addThreads[k].interrupt();
                     }
                 }
             } catch (InterruptedException e) {
@@ -223,6 +232,7 @@ public class TestFineGrainedHeap {
         addThreads = new AddThread[numberOfThreads];
         for (int i = 0; i < numberOfThreads; i++) {
             addThreads[i] = new AddThread(lists[i].list);
+            threadIDPool.addID(addThreads[i].getName());
         }
         //启动线程
         for (int i = 0; i < numberOfThreads; i++) {
@@ -232,10 +242,11 @@ public class TestFineGrainedHeap {
         //执行线程中的任务
         for (int i = 0; i < numberOfThreads; i++) {
             try {
-                addThreads[i].join(100);
+                addThreads[i].join(300);
                 if (addThreads[i].isAlive()){
                     for (int k = 0; k < numberOfThreads; k++) {
                         addThreads[k].cancel();
+                        addThreads[k].interrupt();
                     }
                 }
             } catch (InterruptedException e) {
@@ -252,6 +263,7 @@ public class TestFineGrainedHeap {
             //初始化线程
             for (int i = 0; i < numberOfThreads; i++) {
                 removeMinThreads[i] = new RemoveMinThread();
+                threadIDPool.addID(removeMinThreads[i].getName());
             }
             //开启线程
             for (int i = 0; i < numberOfThreads; i++) {
@@ -260,10 +272,11 @@ public class TestFineGrainedHeap {
             //执行线程中的任务
             for (int i = 0; i < numberOfThreads; i++) {
                 try {
-                    removeMinThreads[i].join(100);
+                    removeMinThreads[i].join(300);
                     if (removeMinThreads[i].isAlive()){
                         for (int k = 0; k < numberOfThreads; k++) {
                             removeMinThreads[k].cancel();
+                            removeMinThreads[k].interrupt();
                         }
                     }
                 } catch (InterruptedException e) {
@@ -320,6 +333,17 @@ public class TestFineGrainedHeap {
         for (int i = 0; i < vector.size(); i++) {
             tempList[i] = vector.get(i);
         }
+
+        /**kill all alive threads*/
+        ThreadGroup threadGroup = Thread.currentThread().getThreadGroup();
+        Thread[] threads = new Thread[(int)(threadGroup.activeCount() * 1.2)];
+        int count = threadGroup.enumerate(threads, true);
+        for (int i = 0; i < count; i++) {
+            if (threadIDPool.contain(threads[i].getName())){
+                threads[i].interrupt();
+            }
+        }
+
         return tempList;
     }
 
@@ -411,7 +435,7 @@ public class TestFineGrainedHeap {
 
         @Override
         public void run(){
-            while (!flag){
+            while (!flag && !Thread.interrupted()){
                 try {
                     Object result = method_remove.invoke(mutantInstance,null);
                     if (result == null){
@@ -440,7 +464,7 @@ public class TestFineGrainedHeap {
         @Override
         public void run(){
 
-            while(!flag){
+            while(!flag && !Thread.interrupted()){
                 for (int i = 0; i < mylist.size(); i++) {
                     try {
                         method_add.invoke(mutantInstance,mylist.get(i),mylist.get(i));

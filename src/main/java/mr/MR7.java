@@ -35,6 +35,7 @@ public class MR7 implements MetamorphicRelations {
         //产生y值
         this.target = sourceTopArray[target_index + 1] - 1;
 
+        this.target_index = 2;
         //将原始测试数据复制给衍生测试数据并添加上y
         System.arraycopy(sourceArray,0,followArray,0,sourceArray.length - 1);
         followArray[sourceArray.length - 1] = target;
@@ -99,8 +100,8 @@ public class MR7 implements MetamorphicRelations {
             //记录杀死的变异体的ID
             List<String> killedMutants = new ArrayList<>();
             List<Long> times = new ArrayList<>();
-            for (int i = 0; i < mutantSet.size(); i++) {
-//            for (int i = 0; i < 2; i++) {
+//            for (int i = 0; i < mutantSet.size(); i++) {
+            for (int i = 0; i < 2; i++) {
                 System.out.println("MR7: 开始测试" + objectName + "的" + mutantSet.getMutantID(i)  + "; loop:" + loop + " numberOfThreads:" + numberOfThreads);
 
                 //开始记录时间
@@ -117,11 +118,11 @@ public class MR7 implements MetamorphicRelations {
                 int[] sourceTopArray = testProgramForSource.executeServiceAndGetResult(index,numberOfThreads,serviceName,
                         mutantSet.getMutantFullName(i),sourceArray);
 
-//                System.out.println("source top array:");
-//                for (int k = 0; k < sourceTopArray.length; k++) {
-//                    System.out.print(sourceTopArray[k] + ", ");
-//                }
-//                System.out.println();
+                System.out.println("source top array:");
+                for (int k = 0; k < sourceTopArray.length; k++) {
+                    System.out.print(sourceTopArray[k] + ", ");
+                }
+                System.out.println();
 
 
                 //获取衍生测试数据
@@ -132,11 +133,11 @@ public class MR7 implements MetamorphicRelations {
                 int[] followTopArray = testProgramForFollowUp.executeServiceAndGetResult(index,numberOfThreads,serviceName,
                         mutantSet.getMutantFullName(i),followUpArray);
 
-//                System.out.println("followup top array:");
-//                for (int k = 0; k < followTopArray.length; k++) {
-//                    System.out.print(followTopArray[k] + ", ");
-//                }
-//                System.out.println();
+                System.out.println("followup top array:");
+                for (int k = 0; k < followTopArray.length; k++) {
+                    System.out.print(followTopArray[k] + ", ");
+                }
+                System.out.println();
 
                 //验证原始数据和衍生数据的执行结果是否符合蜕变关系
                 boolean flag = isConformToMR(sourceTopArray,followTopArray);
@@ -182,9 +183,9 @@ public class MR7 implements MetamorphicRelations {
     public static void main(String[] args) {
         MR7 mr = new MR7();
         //        String[] names = {"SimpleLinear","SimpleTree","SequentialHeap","FineGrainedHeap","SkipQueue"};
-        String[] names = {"SimpleLinear","SimpleTree","SequentialHeap"};
+//        String[] names = {"SimpleLinear","SimpleTree","SequentialHeap"};
         int[] numberofthreads = {2, 5, 10};
-//        String[] names = {"SimpleLinear"};
+        String[] names = {"SimpleLinear"};
 //        String[] names = {"SimpleTree"};
 //        String[] names = {"SkipQueue"};
 //        mr.executeService(3,0,5,"SimpleLinear");
@@ -192,7 +193,7 @@ public class MR7 implements MetamorphicRelations {
             for (int j = 0; j < names.length; j++) {
                 for (int k = 0; k < numberofthreads.length; k++) {
                     for (int l = 0; l < 5; l++) {
-                        mr.executeService(i,l,numberofthreads[k],names[j]);
+                        mr.executeService(0,l,numberofthreads[k],names[j]);
                     }
                 }
             }

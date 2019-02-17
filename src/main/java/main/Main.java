@@ -30,8 +30,8 @@ public class Main {
 //    private static final String[] OBJECTNAMES = {"SimpleLinear","SimpleTree","SequentialHeap",
 //            "FineGrainedHeap","SkipQueue"};
 //    private static final String[] OBJECTNAMES = {"SimpleTree"};
-//    private static final String[] OBJECTNAMES = {"FineGrainedHeap"};
-    private static final String[] OBJECTNAMES = {"SkipQueue"};
+    private static final String[] OBJECTNAMES = {"FineGrainedHeap"};
+//    private static final String[] OBJECTNAMES = {"SkipQueue"};
 //    private static final String[] OBJECTNAMES = {"SequentialHeap"};
 //    private static final String[] OBJECTNAMES = {"SimpleLinear"};
 

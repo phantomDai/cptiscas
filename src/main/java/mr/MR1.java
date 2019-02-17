@@ -159,17 +159,18 @@ public class MR1 implements MetamorphicRelations {
 
     public static void main(String[] args) {
         MR1 mr = new MR1();
-//        String[] names = {"SimpleLinear","SimpleTree","SequentialHeap","FineGrainedHeap","SkipQueue"};
         String[] names = {"FineGrainedHeap"};
-//        String[] names = {"SimpleLinear"};
-//        String[] names = {"SimpleTree"};
-//        String[] names = {"SkipQueue"};
-//        String[] names = {"SequentialHeap"};
+        int[] indexs = {0, 1, 2, 3};
+        int[] loops = {0, 1, 2, 3, 4};
+        int[] numberOfThreads = {2, 5, 10};
 
-        for (int i = 0; i < names.length; i++) {
-            mr.executeService(3,0,5,names[i]);
+        for (int i = 0; i < loops.length; i++) {
+            for (int j = 3; j < indexs.length; j++) {
+                for (int k = 1; k < numberOfThreads.length; k++) {
+                    mr.executeService(indexs[j], loops[i], numberOfThreads[k], "FineGrainedHeap");
+                }
+            }
         }
-        System.exit(0);
     }
 
 }
