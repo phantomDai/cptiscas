@@ -172,5 +172,4 @@ public class MR1 implements MetamorphicRelations {
             }
         }
     }
-
 }

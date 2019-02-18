@@ -55,7 +55,7 @@ public class FineGrainedHeap<T> implements PQueue<T> {
     heap[child].unlock();
     while (child > ROOT) {
       int parent = child / 2;
-      heap[parent].addTryLock();
+      boolean flag = heap[parent].addTryLock();
       heap[child].lock();
       int oldChild = child;
       try {
@@ -73,7 +73,9 @@ public class FineGrainedHeap<T> implements PQueue<T> {
         }
       } finally {
         heap[oldChild].unlock();
-        heap[parent].unlock();
+        if (flag){
+          heap[parent].unlock();
+        }
       }
     }
     if (child == ROOT) {
@@ -209,8 +211,9 @@ public class FineGrainedHeap<T> implements PQueue<T> {
       lock.unlock();
     }
 	
-	public void addTryLock() {
-      lock.tryLock();
+	public boolean addTryLock() {
+      boolean flag = lock.tryLock();
+      return flag;
     }
 
     public void addLockInterruptibly() throws InterruptedException {lock.lockInterruptibly();}

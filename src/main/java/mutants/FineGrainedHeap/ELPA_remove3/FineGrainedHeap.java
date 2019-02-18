@@ -93,7 +93,7 @@ public class FineGrainedHeap<T> implements PQueue<T> {
   public T removeMin() {
     heapLock.lock();
     int bottom = --next;
-    heap[bottom].removeTryLock();
+    boolean flag = heap[bottom].removeTryLock();
     heap[ROOT].lock();
     heapLock.unlock();
     if (heap[ROOT].tag == Status.EMPTY) {
@@ -105,7 +105,10 @@ public class FineGrainedHeap<T> implements PQueue<T> {
     heap[ROOT].tag = Status.EMPTY;
     swap(bottom, ROOT);
     heap[bottom].owner = NO_ONE;
-    heap[bottom].unlock();
+    if (flag){
+      heap[bottom].unlock();
+    }
+
     if (heap[ROOT].tag == Status.EMPTY) {
       heap[ROOT].unlock();
       return item;
@@ -215,8 +218,9 @@ public class FineGrainedHeap<T> implements PQueue<T> {
 
     public void addLockInterruptibly() throws InterruptedException {lock.lockInterruptibly();}
 
-    public void removeTryLock() {
-      lock.tryLock();
+    public boolean removeTryLock() {
+      boolean flag = lock.tryLock();
+      return flag;
     }
 
     public void removeLockInterruptibly() throws InterruptedException {lock.lockInterruptibly();}

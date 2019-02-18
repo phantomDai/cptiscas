@@ -94,10 +94,12 @@ public class FineGrainedHeap<T> implements PQueue<T> {
     heapLock.lock();
     int bottom = --next;
     heap[bottom].lock();
-    heap[ROOT].removeTryLock();
+    boolean flag = heap[ROOT].removeTryLock();
     heapLock.unlock();
     if (heap[ROOT].tag == Status.EMPTY) {
-      heap[ROOT].unlock();
+      if (flag){
+        heap[ROOT].unlock();
+      }
       heap[bottom].lock();
       return null;
     }
@@ -107,7 +109,10 @@ public class FineGrainedHeap<T> implements PQueue<T> {
     heap[bottom].owner = NO_ONE;
     heap[bottom].unlock();
     if (heap[ROOT].tag == Status.EMPTY) {
-      heap[ROOT].unlock();
+      if (flag){
+        heap[ROOT].unlock();
+      }
+
       return item;
     }
     int child = 0;
@@ -215,8 +220,9 @@ public class FineGrainedHeap<T> implements PQueue<T> {
 
     public void addLockInterruptibly() throws InterruptedException {lock.lockInterruptibly();}
 
-    public void removeTryLock() {
-      lock.tryLock();
+    public boolean removeTryLock() {
+      boolean flag = lock.tryLock();
+      return flag;
     }
 
     public void removeLockInterruptibly() throws InterruptedException {lock.lockInterruptibly();}

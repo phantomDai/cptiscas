@@ -91,11 +91,14 @@ public class FineGrainedHeap<T> implements PQueue<T> {
    * @return lowest-priority item.
    */
   public T removeMin() {
-    heapLock.tryLock();
+    boolean flag = heapLock.tryLock();
     int bottom = --next;
     heap[bottom].lock();
     heap[ROOT].lock();
-    heapLock.unlock();
+    if (flag){
+      heapLock.unlock();
+    }
+
     if (heap[ROOT].tag == Status.EMPTY) {
       heap[ROOT].unlock();
       heap[bottom].lock();

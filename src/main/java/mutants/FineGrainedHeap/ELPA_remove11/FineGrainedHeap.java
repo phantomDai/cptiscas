@@ -116,13 +116,17 @@ public class FineGrainedHeap<T> implements PQueue<T> {
       int left = parent * 2;
       int right = (parent * 2) + 1;
       heap[left].lock();
-      heap[right].removeTryLock();
+      boolean flag = heap[right].removeTryLock();
       if (heap[left].tag == Status.EMPTY) {
-        heap[right].unlock();
+        if (flag){
+          heap[right].unlock();
+        }
         heap[left].unlock();
         break;
       } else if (heap[right].tag == Status.EMPTY || heap[left].score < heap[right].score) {
-        heap[right].unlock();
+        if (flag){
+          heap[right].unlock();
+        }
         child = left;
       } else {
         heap[left].unlock();
@@ -215,8 +219,9 @@ public class FineGrainedHeap<T> implements PQueue<T> {
 
     public void addLockInterruptibly() throws InterruptedException {lock.lockInterruptibly();}
 
-    public void removeTryLock() {
-      lock.tryLock();
+    public boolean removeTryLock() {
+      boolean flag = lock.tryLock();
+      return flag;
     }
 
     public void removeLockInterruptibly() throws InterruptedException {lock.lockInterruptibly();}

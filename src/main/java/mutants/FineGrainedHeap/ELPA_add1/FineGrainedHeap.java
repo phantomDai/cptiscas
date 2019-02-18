@@ -47,10 +47,12 @@ public class FineGrainedHeap<T> implements PQueue<T> {
    * @param priority item priority
    */
   public void add(T item, int priority) {
-    heapLock.tryLock();
+    boolean flag = heapLock.tryLock();
     int child = next++;
     heap[child].lock();
-    heapLock.unlock();
+    if (flag){
+      heapLock.unlock();
+    }
     heap[child].init(item, priority);
     heap[child].unlock();
     while (child > ROOT) {
