@@ -16,14 +16,10 @@ import java.util.*;
  */
 public class MR2 implements MetamorphicRelations {
 
-
-
     @Override
     public int[] sourceList(int[] mylist) {
         return mylist;
     }
-
-
 
     public int[] followUpList(int[] mylist, int[] sourcetoplist) {
         Random random = new Random();
@@ -152,15 +148,10 @@ public class MR2 implements MetamorphicRelations {
 //        String[] names = {"FineGrainedHeap","SkipQueue"};
 //        String[] names = {"SimpleLinear"};
 //        String[] names = {"SimpleTree"};
-        String[] names = {"SkipQueue"};
+        String[] names = {"FineGrainedHeap"};
 
         for (int i = 0; i < names.length; i++) {
             mr.executeService(3,0,5,names[i]);
         }
     }
-
-
-
-
-
 }
