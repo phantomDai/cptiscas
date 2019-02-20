@@ -84,7 +84,7 @@ public class Main {
                 String MRName = MRPACKAGE + MRNAMES[j];
                 initializeObject(MRName);
                 for (int k = 0; k < LOOP; k++) {
-                    for (int l = 2; l < INDEXS.length; l++) {
+                    for (int l = 0; l < INDEXS.length; l++) {
                         for (int m = 0; m < NUMBEROFTHREADS.length; m++) {
                             try {
                                 MRmethod_executeService.invoke(instance,INDEXS[l],k,NUMBEROFTHREADS[m],OBJECTNAMES[i]);
