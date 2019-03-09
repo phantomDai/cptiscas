@@ -79,11 +79,12 @@ public class Main {
         for (int i = 0; i < OBJECTNAMES.length; i++) {
             //如果待测程序是“sequentialHeap”的话是需要测试1种场景
 
-            for (int j = 0; j < MRNAMES.length; j++) {
-//                for (int j = 0; j < 1; j++) {
+//            for (int j = 0; j < MRNAMES.length; j++) {
+                for (int j = 13; j < 26; j++) {
                 String MRName = MRPACKAGE + MRNAMES[j];
                 initializeObject(MRName);
-                for (int k = 0; k < LOOP; k++) {
+//                for (int k = 0; k < LOOP; k++) {
+                for (int k = 4; k < 5; k++) {
                     for (int l = 0; l < INDEXS.length; l++) {
                         for (int m = 0; m < NUMBEROFTHREADS.length; m++) {
                             try {
@@ -97,8 +98,8 @@ public class Main {
                     }
                 }
             }
-
         }
+        System.exit(0);
     }
 
     /**

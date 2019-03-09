@@ -32,6 +32,11 @@ public class LogRecorder {
     private String[] deadLockMutants = {"EVR_146","STD_212","STD_29","STD_31","STD_60","STD_61",
             "STD_70","RCXC_add1","RCXC_add2","RCXC_add3","RCXC_add4","RCXC_add5","RUF_add1"};
 
+    private String[] execptionAdd = {"ELPA_add10", "ELPA_add2","ELPA_add4","ELPA_add6","ELPA_add8"};
+
+    private String[] execptionRemove = {"ELPA_remove5"};
+
+
     public void write(int index, int loop, int seed, int numberOfThreads,String objectName,
                       String MRName, List<String> killedMutants, int numOfMutants,long time) {
         //如果index = 2,3 并且测试的对象是FineGrainedHeap时，增加造成死锁的变异体
@@ -39,6 +44,17 @@ public class LogRecorder {
             for (int i = 0; i < deadLockMutants.length; i++) {
                 killedMutants.add(deadLockMutants[i]);
             }
+            if (index == 2){
+                for (int i = 0; i < execptionRemove.length; i++) {
+                    killedMutants.add(execptionRemove[i]);
+                }
+            }else {
+                for (int i = 0; i < execptionAdd.length; i++) {
+                    killedMutants.add(execptionAdd[i]);
+                }
+            }
+
+
         }
 
         //获取文件名以及文件的绝对路径
