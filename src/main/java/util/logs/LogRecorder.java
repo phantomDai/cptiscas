@@ -36,6 +36,12 @@ public class LogRecorder {
 
     private String[] execptionRemove = {"ELPA_remove5"};
 
+    private String[] outOfBound = {"ODL_50", "ROR_V1_44", "LOI_12", "AOIS_160", "AOIS_137",
+            "ROR_85", "ROR_22", "STD_216", "STD_157", "SDL_85", "ROR_42", "ODL_32", "LOI_71",
+            "LOI_19", "AOR_93", "AOIS_26", "AOIS_140", "SHCR_add1", "EVR_80", "COR_57", "STD_55",
+            "LVR_213", "STD_147", "COR_1", "AOIS_42", "ROR_120", "COR_48", "STD_140", "LVR_221",
+            "AOIS_153", "AOIS_154"};
+
 
     public void write(int index, int loop, int seed, int numberOfThreads,String objectName,
                       String MRName, List<String> killedMutants, int numOfMutants,long time) {
@@ -44,11 +50,16 @@ public class LogRecorder {
             for (int i = 0; i < deadLockMutants.length; i++) {
                 killedMutants.add(deadLockMutants[i]);
             }
+
+            for (int i = 0; i < outOfBound.length; i++) {
+                killedMutants.add(outOfBound[i]);
+            }
+
             if (index == 2){
                 for (int i = 0; i < execptionRemove.length; i++) {
                     killedMutants.add(execptionRemove[i]);
                 }
-            }else {
+            }else if (index ==3){
                 for (int i = 0; i < execptionAdd.length; i++) {
                     killedMutants.add(execptionAdd[i]);
                 }
