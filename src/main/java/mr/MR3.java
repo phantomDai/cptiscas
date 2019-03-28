@@ -144,11 +144,11 @@ public class MR3 implements MetamorphicRelations {
         //        String[] names = {"SimpleLinear","SimpleTree","SequentialHeap","FineGrainedHeap","SkipQueue"};
 //        String[] names = {"FineGrainedHeap","SkipQueue"};
 //        String[] names = {"SimpleLinear"};
-        String[] names = {"SimpleTree"};
+        String[] names = {"FineGrainedHeap"};
 //        String[] names = {"SkipQueue"};
 
         for (int i = 0; i < names.length; i++) {
-            mr.executeService(3,0,5,names[i]);
+            mr.executeService(2,0,10,names[i]);
         }
     }
 

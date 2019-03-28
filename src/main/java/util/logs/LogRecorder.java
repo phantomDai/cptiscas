@@ -48,7 +48,10 @@ public class LogRecorder {
         //如果index = 2,3 并且测试的对象是FineGrainedHeap时，增加造成死锁的变异体
         if (objectName.equals("FineGrainedHeap") && (index == 2 || index == 3)){
             for (int i = 0; i < deadLockMutants.length; i++) {
-                killedMutants.add(deadLockMutants[i]);
+                if (!killedMutants.contains(deadLockMutants[i])){
+                    killedMutants.add(deadLockMutants[i]);
+                }
+
             }
 
 //            for (int i = 0; i < outOfBound.length; i++) {
@@ -56,16 +59,21 @@ public class LogRecorder {
 //            }
 
             if (index == 2){
-                for (int i = 0; i < execptionRemove.length; i++) {
-                    killedMutants.add(execptionRemove[i]);
+                for (int i = 0; i < execptionAdd.length; i++) {
+                    killedMutants.add(execptionAdd[i]);
                 }
+                numOfMutants += 14;
+
+
             }else if (index ==3){
                 for (int i = 0; i < execptionAdd.length; i++) {
                     killedMutants.add(execptionAdd[i]);
                 }
+                for (int i = 0; i < execptionRemove.length; i++) {
+                    killedMutants.add(execptionRemove[i]);
+                }
+                numOfMutants += 18;
             }
-
-
         }
 
         //获取文件名以及文件的绝对路径
