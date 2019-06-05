@@ -281,6 +281,7 @@ public class TestSkipQueue {
         for (int i = 0; i < vector.size(); i++) {
             tempList[i] = vector.get(i);
         }
+        Arrays.sort(tempList);
         return tempList;
     }
 

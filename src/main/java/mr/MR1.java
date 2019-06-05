@@ -81,7 +81,7 @@ public class MR1 implements MetamorphicRelations {
         //获取写入每次执行结果的对象
         LogRecorder logRecorder = new LogRecorder();
 
-        for (int j = 0; j < SEED; j++) {
+        for (int j = 0; j < mutantSet.size(); j++) {
             //记录杀死的变异体的ID
             List<String> killedMutants = new ArrayList<>();
 
@@ -159,17 +159,6 @@ public class MR1 implements MetamorphicRelations {
 
     public static void main(String[] args) {
         MR1 mr = new MR1();
-        String[] names = {"FineGrainedHeap"};
-        int[] indexs = {0, 1, 2, 3};
-        int[] loops = {0, 1, 2, 3, 4};
-        int[] numberOfThreads = {2, 5, 10};
-
-        for (int i = 0; i < loops.length; i++) {
-            for (int j = 3; j < indexs.length; j++) {
-                for (int k = 1; k < numberOfThreads.length; k++) {
-                    mr.executeService(indexs[j], loops[i], numberOfThreads[k], "FineGrainedHeap");
-                }
-            }
-        }
+        mr.executeService(2, 0, 10, "FineGrainedHeap");
     }
 }

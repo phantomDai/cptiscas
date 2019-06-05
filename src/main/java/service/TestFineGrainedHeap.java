@@ -7,6 +7,9 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * 测试FineGrainedHeap的主要类
@@ -113,6 +116,7 @@ public class TestFineGrainedHeap {
         //并发的移除数据
         //根据开启的线程数目决定循环的次数
         int loop = DEFAULTNUMBER / numberOfThreads;
+//        ExecutorService exe = Executors.newFixedThreadPool(30);
         for (int j = 0; j < loop; j++) {
             //初始化线程
             removeMinThreads = new RemoveMinThread[numberOfThreads];
@@ -131,7 +135,6 @@ public class TestFineGrainedHeap {
                     if (removeMinThreads[i].isAlive()){
                         for (int k = 0; k < numberOfThreads; k++) {
                             removeMinThreads[k].cancel();
-                            removeMinThreads[k].interrupt();
                         }
                     }
                 } catch (InterruptedException e) {
@@ -185,7 +188,6 @@ public class TestFineGrainedHeap {
                 if (addThreads[i].isAlive()){
                     for (int k = 0; k < numberOfThreads; k++) {
                         addThreads[k].cancel();
-                        addThreads[k].interrupt();
                     }
                 }
             } catch (InterruptedException e) {
@@ -246,7 +248,6 @@ public class TestFineGrainedHeap {
                 if (addThreads[i].isAlive()){
                     for (int k = 0; k < numberOfThreads; k++) {
                         addThreads[k].cancel();
-                        addThreads[k].interrupt();
                     }
                 }
             } catch (InterruptedException e) {
@@ -276,7 +277,6 @@ public class TestFineGrainedHeap {
                     if (removeMinThreads[i].isAlive()){
                         for (int k = 0; k < numberOfThreads; k++) {
                             removeMinThreads[k].cancel();
-                            removeMinThreads[k].interrupt();
                         }
                     }
                 } catch (InterruptedException e) {
@@ -332,16 +332,6 @@ public class TestFineGrainedHeap {
         int[] tempList = new int[vector.size()];
         for (int i = 0; i < vector.size(); i++) {
             tempList[i] = vector.get(i);
-        }
-
-        /**kill all alive threads*/
-        ThreadGroup threadGroup = Thread.currentThread().getThreadGroup();
-        Thread[] threads = new Thread[(int)(threadGroup.activeCount() * 1.2)];
-        int count = threadGroup.enumerate(threads, true);
-        for (int i = 0; i < count; i++) {
-            if (threadIDPool.contain(threads[i].getName())){
-                threads[i].interrupt();
-            }
         }
 
         return tempList;
@@ -435,7 +425,10 @@ public class TestFineGrainedHeap {
 
         @Override
         public void run(){
-            while (!flag && !Thread.interrupted()){
+            while (!flag){
+                if (flag){
+                    break;
+                }
                 try {
                     Object result = method_remove.invoke(mutantInstance,null);
                     if (result == null){
@@ -463,10 +456,15 @@ public class TestFineGrainedHeap {
         }
         @Override
         public void run(){
-
-            while(!flag && !Thread.interrupted()){
+            while(!flag){
+                if (flag){
+                    break;
+                }
                 for (int i = 0; i < mylist.size(); i++) {
                     try {
+                        if (flag){
+                            break;
+                        }
                         method_add.invoke(mutantInstance,mylist.get(i),mylist.get(i));
                         if (i == (mylist.size() - 1)){
                             cancel();
@@ -476,6 +474,9 @@ public class TestFineGrainedHeap {
                     } catch (InvocationTargetException e) {
                         e.printStackTrace();
                     }
+                }
+                if (flag){
+                    break;
                 }
             }
         }

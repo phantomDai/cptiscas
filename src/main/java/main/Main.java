@@ -38,8 +38,8 @@ public class Main {
     /**
      * 测试场景的编码
      */
-    private static final int[] INDEXS = {0, 1, 2, 3};
-//    private static final int[] INDEXS = {3};
+//    private static final int[] INDEXS = {0, 1, 2, 3};
+    private static final int[] INDEXS = {2};
 
     /**
      *并发测试开启的线程数目
@@ -80,11 +80,11 @@ public class Main {
             //如果待测程序是“sequentialHeap”的话是需要测试1种场景
 
 //            for (int j = 0; j < MRNAMES.length; j++) {
-                for (int j = 13; j < 26; j++) {
+                for (int j = 22; j < MRNAMES.length; j++) {
                 String MRName = MRPACKAGE + MRNAMES[j];
                 initializeObject(MRName);
 //                for (int k = 0; k < LOOP; k++) {
-                for (int k = 4; k < 5; k++) {
+                for (int k = 0; k < 5; k++) {
                     for (int l = 0; l < INDEXS.length; l++) {
                         for (int m = 0; m < NUMBEROFTHREADS.length; m++) {
                             try {

@@ -9,13 +9,10 @@
  */
 
 package priority;
-
-
-
 /**
  * Simple bounded priority queue.
  * @param T item type
- * @author Maurice Herlihy
+ * @author phantomD
  */
 public class SimpleLinear<T> implements PQueue<T> {
   int range;

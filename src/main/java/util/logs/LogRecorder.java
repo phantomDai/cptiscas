@@ -29,52 +29,29 @@ import static java.io.File.separator;
  */
 public class LogRecorder {
 
-    private String[] deadLockMutants = {"EVR_146","STD_212","STD_29","STD_31","STD_60","STD_61",
-            "STD_70","RCXC_add1","RCXC_add2","RCXC_add3","RCXC_add4","RCXC_add5","RUF_add1"};
 
-    private String[] execptionAdd = {"ELPA_add10", "ELPA_add2","ELPA_add4","ELPA_add6","ELPA_add8"};
+    String[] removeArray4Fine = {"STD_132", "STD_134", "STD_140", "STD_212",
+            "STD_29", "STD_31", "STD_60", "STD_61", "STD_70", "EVR_72", "STD_75",
+            "RCXC_remove1", "RCXC_remove4","RCXC_remove5", "RCXC_remove6", "ELPA_remove5"};
 
-    private String[] execptionRemove = {"ELPA_remove5"};
-
-//    private String[] outOfBound = {"ODL_50", "ROR_V1_44", "LOI_12", "AOIS_160", "AOIS_137",
-//            "ROR_85", "ROR_22", "STD_216", "STD_157", "SDL_85", "ROR_42", "ODL_32", "LOI_71",
-//            "LOI_19", "AOR_93", "AOIS_26", "AOIS_140", "SHCR_add1", "EVR_80", "COR_57", "STD_55",
-//            "LVR_213", "STD_147", "COR_1", "AOIS_42", "ROR_120", "COR_48", "STD_140", "LVR_221",
-//            "AOIS_153", "AOIS_154"};
-
-
+    String[] addArray4Fine = {"RCXC_add1", "RCXC_add2", "RCXC_add3",
+            "RCXC_add4", "RCXC_add5", "RUF_add1", "ROR_34", "ROR_83", "COI_5"};
     public void write(int index, int loop, int seed, int numberOfThreads,String objectName,
-                      String MRName, List<String> killedMutants, int numOfMutants,long time) {
-        //如果index = 2,3 并且测试的对象是FineGrainedHeap时，增加造成死锁的变异体
-        if (objectName.equals("FineGrainedHeap") && (index == 2 || index == 3)){
-            for (int i = 0; i < deadLockMutants.length; i++) {
-                if (!killedMutants.contains(deadLockMutants[i])){
-                    killedMutants.add(deadLockMutants[i]);
-                }
+                      String MRName, List<String> killedMutants, int numOfMutants, long time) {
 
+        if (objectName.equals("FineGrainedHeap") && (index == 1)){
+            for (String item : removeArray4Fine){
+                killedMutants.add(item);
             }
-
-//            for (int i = 0; i < outOfBound.length; i++) {
-//                killedMutants.add(outOfBound[i]);
-//            }
-
-            if (index == 2){
-                for (int i = 0; i < execptionAdd.length; i++) {
-                    killedMutants.add(execptionAdd[i]);
-                }
-                numOfMutants += 14;
-
-
-            }else if (index ==3){
-                for (int i = 0; i < execptionAdd.length; i++) {
-                    killedMutants.add(execptionAdd[i]);
-                }
-                for (int i = 0; i < execptionRemove.length; i++) {
-                    killedMutants.add(execptionRemove[i]);
-                }
-                numOfMutants += 18;
-            }
+            numOfMutants += removeArray4Fine.length;
         }
+        if (objectName.equals("FineGrainedHeap") && (index == 2)){
+            for (String item : addArray4Fine){
+                killedMutants.add(item);
+            }
+            numOfMutants += addArray4Fine.length;
+        }
+
 
         //获取文件名以及文件的绝对路径
         String fileName = objectName + "index@" + String.valueOf(index)

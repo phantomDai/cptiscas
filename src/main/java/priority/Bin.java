@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Simple bin implementation used to service priority queues.
  * @param T item type
- * @author mph
+ * @author phantomD
  */
 public class Bin<T> {
   List<T> list;
