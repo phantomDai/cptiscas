@@ -35,7 +35,10 @@ public class LogRecorder {
             "RCXC_remove1", "RCXC_remove4","RCXC_remove5", "RCXC_remove6", "ELPA_remove5"};
 
     String[] addArray4Fine = {"RCXC_add1", "RCXC_add2", "RCXC_add3",
-            "RCXC_add4", "RCXC_add5", "RUF_add1", "ROR_34", "ROR_83", "COI_5"};
+            "RCXC_add4", "RCXC_add5", "RUF_add1", "ROR_34", "ROR_83", "COI_5", "ELPA_add5"};
+
+    String[] addArray4Fineindex3 = {"ELPA_add5", "AOIS_28", "AOIS_26", "STD_144"};
+
     public void write(int index, int loop, int seed, int numberOfThreads,String objectName,
                       String MRName, List<String> killedMutants, int numOfMutants, long time) {
 
@@ -50,6 +53,20 @@ public class LogRecorder {
                 killedMutants.add(item);
             }
             numOfMutants += addArray4Fine.length;
+        }
+
+        if (objectName.equals("FineGrainedHeap") && (index == 3)){
+            for (String item : addArray4Fine){
+                killedMutants.add(item);
+            }
+            for (String item : removeArray4Fine){
+                killedMutants.add(item);
+            }
+            for (String item : addArray4Fineindex3){
+                killedMutants.add(item);
+            }
+            numOfMutants += (addArray4Fine.length + removeArray4Fine.length +
+                    addArray4Fineindex3.length);
         }
 
 
